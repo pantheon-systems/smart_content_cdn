@@ -4,23 +4,3 @@
  * @file
  * Hook implementations for Smart CDN module.
  */
-
-/**
- * Implements hook_theme().
- */
-function smart_content_cdn_theme() {
-  return [
-    // Template for the demo page.
-    'page__hello_world' => [
-      'template' => 'page--hello-world',
-    ],
-    // Template for the page content.
-    'hello_world_content' => [
-      'template' => 'hello-world',
-      'variables' => [
-        'geo' => NULL,
-        'image_path' => NULL,
-      ],
-    ],
-  ];
-}
