@@ -1,0 +1,7 @@
+smart_content_cdn.hello-world:
+  path: '/hello-world'
+  defaults:
+    _controller: '\Drupal\smart_content_cdn\Controller\CDNController::content'
+    _title: 'Hello World'
+  requirements:
+    _permission: 'access content'

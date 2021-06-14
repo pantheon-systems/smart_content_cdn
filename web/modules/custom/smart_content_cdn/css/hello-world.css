@@ -1,0 +1,13 @@
+
+.hello-world-content {
+  text-align: center;
+  padding: 100px;
+}
+
+.hello-world-content .geo-text {
+  font-size: 2rem;
+}
+
+.hello-world-content .geo-image {
+  height: 400px;
+}

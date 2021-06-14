@@ -1,0 +1,5 @@
+name: 'Smart Content CDN'
+type: module
+description: 'A content delivery network that personalizes content for users'
+core_version_requirement: ^8 || ^9
+package: 'Content Personalization'
