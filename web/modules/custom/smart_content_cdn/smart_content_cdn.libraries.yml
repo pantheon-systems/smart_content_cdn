@@ -1,0 +1,7 @@
+condition.cdn:
+  header: true
+  version: 1.x
+  js:
+    js/condition.cdn.js:  { }
+  dependencies:
+    - core/drupal
