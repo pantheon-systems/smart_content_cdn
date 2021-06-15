@@ -36,7 +36,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     $form['set_vary'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Set Vary header'),
-      '#default_value' => ($config->get('set_vary')) ? $config->get('set_vary') : TRUE,
+      '#default_value' => $config->get('set_vary') ? $config->get('set_vary') : TRUE,
     ];
 
     return $form;
