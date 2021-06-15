@@ -1,0 +1,5 @@
+smart_content_cdn.config:
+  title: 'Smart Content CDN Configuration'
+  parent: system.admin_config_system
+  description: 'Configure Smart Content CDN settings'
+  route_name: smart_content_cdn.config

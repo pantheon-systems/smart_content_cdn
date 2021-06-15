@@ -1,0 +1,4 @@
+configure smart content cdn:
+  title: 'Configure Smart Content CDN'
+  description: 'Allows change Smart Content CDN settings'
+  restrict access: TRUE

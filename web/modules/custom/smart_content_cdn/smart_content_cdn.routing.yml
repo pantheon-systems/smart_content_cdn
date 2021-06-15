@@ -1,0 +1,7 @@
+smart_content_cdn.config:
+  path: '/admin/config/system/smart-content-cdn'
+  defaults:
+    _form: '\Drupal\smart_content_cdn\Form\SmartContentCDNConfigForm'
+    _title: 'Smart Content CDN configuration'
+  requirements:
+    _permission: 'configure smart content cdn'

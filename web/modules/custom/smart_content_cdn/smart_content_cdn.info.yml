@@ -1,6 +1,7 @@
 name: 'Smart Content CDN'
 type: module
 description: 'A content delivery network that personalizes content for users'
+configure: smart_content_cdn.config
 core_version_requirement: ^8 || ^9
 package: Smart Content
 dependencies:
