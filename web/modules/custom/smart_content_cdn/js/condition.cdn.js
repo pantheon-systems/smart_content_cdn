@@ -12,7 +12,7 @@
 
 // Handle Smart CDN conditions based on settings..
   Drupal.smartContent.plugin.Field['smart_cdn'] = function (condition) {
-    return condition.settings.smart_cdn.value ? condition.settings.smart_cdn.value : null;
+    return condition.settings.smart_cdn.value ?? null;
   }
 
 })(Drupal);
