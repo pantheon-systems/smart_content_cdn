@@ -30,7 +30,7 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
     $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
 
     // Check if Vary Header should be set.
-    if ($config->get('set_vary')) {
+    if ($config->get('set_vary') ?? TRUE) {
       $response = $event->getResponse();
 
       // Retrieve and set vary header.

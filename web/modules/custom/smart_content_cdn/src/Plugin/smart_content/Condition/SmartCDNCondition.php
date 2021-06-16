@@ -39,7 +39,7 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
     $p_obj = $smart_content_cdn->returnPersonalizationObject('Interest', 'geo');
 
     // Determine CDN value based on derivative id.
-    $cdn_value = [];
+    $cdn_value = NULL;
     switch ($derivative_id) {
       case 'geo':
         $cdn_value = !empty($p_obj['geo']) ? $p_obj['geo'] : NULL;
@@ -48,7 +48,6 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
 
     // Set smart_cdn settings to be used on JS.
     $field_settings['smart_cdn'] = [
-      'derivative' => $derivative_id,
       'value' => $cdn_value,
     ];
 
