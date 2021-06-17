@@ -27,7 +27,7 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
    *   The dispatched event.
    */
   public function onRespond(FilterResponseEvent $event) {
-    $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
+    $config = \Drupal::configFactory()->get('smart_content_cdn.config');
 
     // Check if Vary Header should be set.
     if ($config->get('set_vary') ?? TRUE) {
