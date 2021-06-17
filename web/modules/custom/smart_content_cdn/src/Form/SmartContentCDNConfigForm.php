@@ -31,12 +31,14 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     // Form constructor.
     $form = parent::buildForm($form, $form_state);
 
+    // Config object for default values.
     $config = $this->config('smart_content_cdn.config');
 
+    $default = $config->get('set_vary');
     $form['set_vary'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Set Vary header'),
-      '#default_value' => $config->get('set_vary') ? $config->get('set_vary') : TRUE,
+      '#default_value' => isset($default) ? $default : TRUE,
     ];
 
     return $form;
@@ -66,8 +68,6 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       }
       $config->set($value_key, $value)->save();
     }
-
-    parent::submitForm($form, $form_state);
   }
 
 }
