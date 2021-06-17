@@ -4,3 +4,54 @@
  * @file
  * Hook implementations for Smart CDN module.
  */
+
+/**
+ * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
+ */
+function smart_content_cdn_block_build_smart_content_decision_block_alter(&$build, $block) {
+  // Renderer for adding cacheable dependencies.
+  $renderer = \Drupal::service('renderer');
+
+  // Decision storage object.
+  $storage = $block->getDecisionStorage();
+
+  // List of Smart Content CDN derivatives to add as cacheable dependencies.
+  $derivatives = [
+    'geo',
+  ];
+
+  // Check if Decision exists.
+  if ($storage->hasDecision() && $storage->getDecision()->getSegmentSetStorage()->getPluginId() !== 'broken') {
+    $decision = $storage->getDecision();
+
+    if (!empty($decision)) {
+      // Get attached library settings.
+      $attached_settings = $decision->getAttachedSettings();
+
+      // Check Decision segments.
+      if (!empty($attached_settings['segments'])) {
+        foreach ($attached_settings['segments'] as $segment) {
+          $conditions = $segment['conditions']['group']['conditions'] ?? NULL;
+
+          // Check segment conditions.
+          if (!empty($conditions)) {
+            foreach ($conditions as $key => $condition) {
+              // Check if condition is a smart_cdn condition, if not skip.
+              if (!str_contains($key, 'smart_cdn:') || empty($condition['settings']['value'])) {
+                continue;
+              }
+
+              // Get derivation machine name.
+              $derivative = str_replace('smart_cdn:', '', $key);
+
+              if (in_array($derivative, $derivatives)) {
+                // Add cacheable dependency using block build and derivative value.
+                $renderer->addCacheableDependency($build, $condition['settings']['value']);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
