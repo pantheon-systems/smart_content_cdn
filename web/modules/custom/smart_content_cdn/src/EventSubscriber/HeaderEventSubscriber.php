@@ -41,7 +41,7 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
 
       // Retrieve and set vary header.
       $smart_content_cdn = new HeaderData();
-      $response_vary_header = $smart_content_cdn->returnVaryHeader('Interest');
+      $response_vary_header = $smart_content_cdn->returnVaryHeader('Audience');
       $response->headers->add($response_vary_header);
     }
   }

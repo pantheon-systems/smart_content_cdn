@@ -42,7 +42,7 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
 
     // Get personalization object.
     $smart_content_cdn = new HeaderData();
-    $p_obj = $smart_content_cdn->returnPersonalizationObject('Interest', 'geo');
+    $p_obj = $smart_content_cdn->returnPersonalizationObject('Audience', 'geo');
 
     // Determine CDN value based on derivative id.
     $cdn_value = NULL;
