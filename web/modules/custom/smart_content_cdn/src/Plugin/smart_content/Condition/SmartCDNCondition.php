@@ -2,8 +2,14 @@
 
 namespace Drupal\smart_content_cdn\Plugin\smart_content\Condition;
 
+// @TODO Remove when working with vendor library.
+require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
+
 use Drupal\smart_content\Condition\ConditionTypeConfigurableBase;
-use Kalamuna\SmartCDN\HeaderData;
+use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
+
+// @TODO Switch when working with vendor library.
+// use Kalamuna\SmartCDN\HeaderData;
 
 /**
  * Provides a default Smart Condition.
@@ -36,7 +42,7 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
 
     // Get personalization object.
     $smart_content_cdn = new HeaderData();
-    $p_obj = $smart_content_cdn->returnPersonalizationObject('Interest', 'geo');
+    $p_obj = $smart_content_cdn->returnPersonalizationObject('Audience', 'geo');
 
     // Determine CDN value based on derivative id.
     $cdn_value = NULL;

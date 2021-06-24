@@ -1,0 +1,25 @@
+{
+  "name": "kalamuna/smart-cdn",
+  "description": "Helper class to locate a Drupal installation from a given path.",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Kelly Jacobs",
+      "email": "kelly@kalamuna.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1"
+  },
+  "autoload": {
+    "classmap": [
+      "src/"
+    ],
+    "psr-4": {
+      "Kalamuna\\SmartCDN\\": "src"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
