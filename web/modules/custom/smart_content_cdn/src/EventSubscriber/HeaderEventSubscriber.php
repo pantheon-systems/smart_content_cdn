@@ -2,10 +2,16 @@
 
 namespace Drupal\smart_content_cdn\EventSubscriber;
 
+// @TODO Remove when working with vendor library.
+require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
+
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Kalamuna\SmartCDN\HeaderData;
+use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
+
+// @TODO Switch when working with vendor library.
+// use\Kalamuna\SmartCDN\HeaderData;
 
 /**
  * Class HeaderEventSubscriber.
