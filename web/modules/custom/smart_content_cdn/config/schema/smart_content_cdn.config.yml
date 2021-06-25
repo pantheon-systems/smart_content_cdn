@@ -5,3 +5,6 @@ smart_content_cdn.config:
     set_vary:
       label: 'Set Vary header'
       type: boolean
+    geo_default:
+      label: 'Default Geo value'
+      type: string

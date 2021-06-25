@@ -38,7 +38,18 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     $form['set_vary'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Set Vary header'),
+      '#description' => $this->t('Should the Vary header be set with smart content cdn header data for smart caching?'),
       '#default_value' => isset($default) ? $default : TRUE,
+    ];
+
+    $default = $config->get('geo_default');
+    $form['geo_default'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Default Geo value'),
+      '#description' => $this->t('Default value for Geo location data'),
+      '#default_value' => isset($default) ? $default : '',
+      '#size' => 10,
+      '#maxlength' => 10,
     ];
 
     return $form;

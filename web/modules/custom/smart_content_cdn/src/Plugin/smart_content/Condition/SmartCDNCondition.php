@@ -39,6 +39,7 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
     $settings = parent::getAttachedSettings();
     $field_settings = $settings['settings'] + $this->defaultFieldConfiguration();
     $derivative_id = $this->getDerivativeId();
+    $config = \Drupal::configFactory()->get('smart_content_cdn.config');
 
     // Get personalization object.
     $smart_content_cdn = new HeaderData();
@@ -48,7 +49,8 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
     $cdn_value = NULL;
     switch ($derivative_id) {
       case 'geo':
-        $cdn_value = !empty($p_obj['geo']) ? $p_obj['geo'] : NULL;
+        $geo_default = $config->get('geo_default') ?? NULL;
+        $cdn_value = !empty($p_obj['geo']) ? $p_obj['geo'] : $geo_default;
         break;
     }
 
