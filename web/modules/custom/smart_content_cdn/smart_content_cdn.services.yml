@@ -3,3 +3,9 @@ services:
     class: '\Drupal\smart_content_cdn\EventSubscriber\HeaderEventSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  subscriber_cookie:
+    class: '\Drupal\smart_content_cdn\EventSubscriber\SubscriberCookie'
+    arguments:
+      - '@request_stack'
+    tags:
+      - { name: 'event_subscriber' }

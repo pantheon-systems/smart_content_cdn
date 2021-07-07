@@ -5,3 +5,10 @@ smart_content_cdn.config:
     _title: 'Smart Content CDN configuration'
   requirements:
     _permission: 'configure smart content cdn'
+smart_cdn.subscriber_login:
+  path: '/subscriber-login'
+  defaults:
+    _form: '\Drupal\smart_content_cdn\Form\SubscriberLoginForm'
+    _title: 'Subscriber Login'
+  requirements:
+    _permission: 'access content'
