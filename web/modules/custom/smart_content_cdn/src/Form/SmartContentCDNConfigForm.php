@@ -2,8 +2,15 @@
 
 namespace Drupal\smart_content_cdn\Form;
 
+// @TODO Remove when working with vendor library.
+require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
+
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
+
+// @TODO Switch when working with vendor library.
+// use\Kalamuna\SmartCDN\HeaderData;
 
 /**
  * Contains Smart Content CDN configuration form.
@@ -50,6 +57,18 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#default_value' => isset($default) ? $default : '',
       '#size' => 10,
       '#maxlength' => 10,
+    ];
+
+    // Get header data.
+    $smart_content_cdn = new HeaderData();
+    $audience_header = $smart_content_cdn->getHeader('Audience') ?? '';
+    $interest_header = $smart_content_cdn->getHeader('Interest') ?? '';
+
+    // Output current header data.
+    $form['header_output'] = [
+      '#markup' => '<h2>Current Headers</h1>
+                              <div>Audience: ' . $audience_header . '</div>
+                              <div>Interest: ' . $interest_header . '</div>',
     ];
 
     return $form;
