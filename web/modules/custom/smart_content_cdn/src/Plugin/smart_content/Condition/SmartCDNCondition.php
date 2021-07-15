@@ -43,14 +43,21 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
 
     // Get personalization object.
     $smart_content_cdn = new HeaderData();
-    $p_obj = $smart_content_cdn->returnPersonalizationObject('Audience', 'geo');
+    $p_obj = $smart_content_cdn->returnPersonalizationObject();
 
     // Determine CDN value based on derivative id.
     $cdn_value = NULL;
     switch ($derivative_id) {
       case 'geo':
+        // Get default Geo value from config.
         $geo_default = $config->get('geo_default') ?? NULL;
+
+        // Set value to Geo header if available, set to default config value otherwise.
         $cdn_value = !empty($p_obj['geo']) ? $p_obj['geo'] : $geo_default;
+        break;
+
+      case 'interest':
+        $cdn_value = !empty($p_obj['interest']) ? $p_obj['interest'] : [];
         break;
     }
 
