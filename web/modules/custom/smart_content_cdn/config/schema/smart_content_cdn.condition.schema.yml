@@ -1,0 +1,13 @@
+"smart_content.condition.plugin.type:array_select":
+  type: smart_content.condition
+  mapping:
+    condition_type_settings:
+      type: mapping
+      label: 'Condition type settings'
+      mapping:
+        negate:
+          type: string
+          label: 'Negate'
+        value:
+          type: string
+          label: 'Value'

@@ -5,3 +5,12 @@ condition.cdn:
     js/condition.cdn.js:  { }
   dependencies:
     - core/drupal
+    - smart_content/condition_type.standard
+
+condition_type.cdn:
+  header: true
+  version: 1.x
+  js:
+    js/condition_type.cdn.js:  { }
+  dependencies:
+    - core/drupal

@@ -9,8 +9,7 @@
   Drupal.smartContent.plugin = Drupal.smartContent.plugin || {};
   Drupal.smartContent.plugin.Field = Drupal.smartContent.plugin.Field || {};
 
-
-// Handle Smart CDN conditions based on settings..
+  // Handle Smart CDN conditions based on settings.
   Drupal.smartContent.plugin.Field['smart_cdn'] = function (condition) {
     return condition.settings.smart_cdn.value ?? null;
   }
