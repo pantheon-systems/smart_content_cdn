@@ -65,7 +65,7 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
   $interest_field_name = 'field_tags';
 
   // Check if entity is a node and has interest field.
-  if ($entity->getEntityTypeId() == 'node' && $entity->hasField($interest_field_name)) {
+  if ($entity->getEntityTypeId() == 'node' && $entity->hasField($interest_field_name) && $view_mode == 'full') {
     $popularity_count = 3;
     $session_name = 'interest';
 
