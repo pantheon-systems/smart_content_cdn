@@ -5,6 +5,8 @@
  * Hook implementations for Smart CDN module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
  */
@@ -51,6 +53,75 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
             }
           }
         }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $display, $view_mode) {
+  $interest_field_name = 'field_tags';
+
+  // Check if entity is a node and has interest field.
+  if ($entity->getEntityTypeId() == 'node' && $entity->hasField($interest_field_name) && $view_mode == 'full') {
+    $popularity_count = 3;
+    $session_name = 'interest';
+
+    // Get session interest tids.
+    $session = \Drupal::request()->getSession();
+    $session_tids = $session->get($session_name);
+
+    // Get interest field.
+    $interest_field = $entity->get($interest_field_name)->getValue();
+    if (!empty($interest_field)) {
+      // Get array of interest tids.
+      $entity_tids = array_map(function($interest_field) {
+        return $interest_field['target_id'] ?? NULL;
+      }, $interest_field);
+
+      // Filter out any empty elements.
+      $entity_tids = array_filter($entity_tids);
+
+      // If session interest tids are empty, set with current node tids.
+      if (empty($session_tids)) {
+        // Initialize tids to a count of 1.
+        $session_tids = array_fill_keys($entity_tids, 1);
+      }
+      else {
+        // Loops through current node tids.
+        foreach ($entity_tids as $tid) {
+          // If tid is in session interest tids, increment.
+          if (array_key_exists($tid, $session_tids)) {
+            $session_tids[$tid]++;
+          }
+          // Otherwise, set to a count of 1.
+          else {
+            $session_tids[$tid] = 1;
+          }
+        }
+      }
+
+      // Save interest tids.
+      $session->set($session_name, $session_tids);
+
+      // Gather popular interest tids.
+      $interest_tids = [];
+      foreach ($session_tids as $tid => $count) {
+        // If tid has been visited a specified number of times, add it to interest array.
+        if ($count >= $popularity_count) {
+          $interest_tids[] = $tid;
+        }
+      }
+
+      if (!empty($interest_tids)) {
+        // Implode interest tids into a single string.
+        $interest_cookie_value = implode(',', $interest_tids);
+
+        // Save interest tids in a cookie.
+        $cookie_service = \Drupal::service('interest_cookie');
+        $cookie_service->setCookieValue($interest_cookie_value);
       }
     }
   }

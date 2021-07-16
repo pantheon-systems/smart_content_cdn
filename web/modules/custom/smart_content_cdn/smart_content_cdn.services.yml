@@ -4,8 +4,16 @@ services:
     tags:
       - { name: 'event_subscriber' }
   subscriber_cookie:
-    class: '\Drupal\smart_content_cdn\EventSubscriber\SubscriberCookie'
+    class: '\Drupal\smart_content_cdn\EventSubscriber\SmartCDNCookie'
     arguments:
       - '@request_stack'
+      - 'subscriberToken'
+    tags:
+      - { name: 'event_subscriber' }
+  interest_cookie:
+    class: '\Drupal\smart_content_cdn\EventSubscriber\SmartCDNCookie'
+    arguments:
+      - '@request_stack'
+      - 'interest'
     tags:
       - { name: 'event_subscriber' }

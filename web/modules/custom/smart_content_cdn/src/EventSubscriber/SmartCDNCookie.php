@@ -3,15 +3,15 @@
 namespace Drupal\smart_content_cdn\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
  * Class SubscriberCookie.
  */
-class SubscriberCookie implements EventSubscriberInterface {
+class SmartCDNCookie implements EventSubscriberInterface {
 
   /**
    * Current request.
@@ -25,7 +25,7 @@ class SubscriberCookie implements EventSubscriberInterface {
    *
    * @var string
    */
-  protected $cookieName = 'subscriberToken';
+  protected $cookieName;
 
   /**
    * The cookie value that will be set during the respond event.
@@ -54,8 +54,9 @@ class SubscriberCookie implements EventSubscriberInterface {
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   Request stack service.
    */
-  public function __construct(RequestStack $request_stack) {
+  public function __construct(RequestStack $request_stack, $cookie_name) {
     $this->request = $request_stack->getCurrentRequest();
+    $this->cookieName = $cookie_name;
   }
 
   /**

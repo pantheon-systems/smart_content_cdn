@@ -93,9 +93,14 @@ class HeaderData {
           }
           break;
 
+        // Parse Interest header.
+        case 'Interest':
+          $parsed_header[$key] = explode(',', $header);
+          break;
+
         // By default, just return header.
         default:
-          $parsed_header = [$key => $header];
+          $parsed_header[$key] = $header;
           break;
       }
 
@@ -120,6 +125,14 @@ class HeaderData {
     // Add geo value to object.
     if (!empty($audience_header_parsed['geo'])) {
       $p_obj['geo'] = $audience_header_parsed['geo'];
+    }
+
+    // Get parsed Interest header.
+    $interest_header_parsed = $this->parseHeader('Interest');
+
+    // Add interest values to object.
+    if (!empty($interest_header_parsed['Interest'])) {
+      $p_obj['interest'] = $interest_header_parsed['Interest'];
     }
 
     return $p_obj;
