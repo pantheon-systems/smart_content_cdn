@@ -61,7 +61,7 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
         break;
 
       case 'role':
-        $cdn_value = !empty($p_obj['role']) ? $p_obj['role'] : [];
+        $cdn_value = !empty($p_obj['role']) ? $p_obj['role'] : 'none';
         break;
     }
 

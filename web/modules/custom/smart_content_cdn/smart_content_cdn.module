@@ -17,11 +17,6 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
   // Decision storage object.
   $storage = $block->getDecisionStorage();
 
-  // List of Smart Content CDN derivatives to add as cacheable dependencies.
-  $derivatives = [
-    'geo',
-  ];
-
   // Check if Decision exists.
   if ($storage->hasDecision() && $storage->getDecision()->getSegmentSetStorage()->getPluginId() !== 'broken') {
     $decision = $storage->getDecision();
@@ -43,13 +38,8 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
                 continue;
               }
 
-              // Get derivation machine name.
-              $derivative = str_replace('smart_cdn:', '', $key);
-
-              if (in_array($derivative, $derivatives)) {
-                // Add cacheable dependency using block build and derivative value.
-                $renderer->addCacheableDependency($build, $condition['settings']['value']);
-              }
+              // Add cacheable dependency using block build and condition value.
+              $renderer->addCacheableDependency($build, $condition['settings']['value']);
             }
           }
         }
