@@ -55,14 +55,11 @@ class SmartCDNDerivative extends DeriverBase {
    *   Array of Role options.
    */
   public static function getRoleOptions() {
-    // Provide default empty option.
-    $default_options = [
+    // List of Role options.
+    return [
       'none' => 'None',
+      'subscriber' => 'Subscriber',
     ];
-    $terms_options = SmartCDNDerivative::getTaxonomyOptions('subscriber_roles');
-
-    // Return merged options.
-    return $default_options + $terms_options;
   }
 
   /**
