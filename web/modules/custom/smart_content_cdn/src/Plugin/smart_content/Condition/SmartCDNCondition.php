@@ -59,6 +59,10 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
       case 'interest':
         $cdn_value = !empty($p_obj['interest']) ? $p_obj['interest'] : [];
         break;
+
+      case 'role':
+        $cdn_value = !empty($p_obj['role']) ? $p_obj['role'] : 'none';
+        break;
     }
 
     // Set smart_cdn settings to be used on JS.

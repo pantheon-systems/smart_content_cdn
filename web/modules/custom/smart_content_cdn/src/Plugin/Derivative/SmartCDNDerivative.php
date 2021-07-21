@@ -29,20 +29,49 @@ class SmartCDNDerivative extends DeriverBase {
         'type' => 'array_select',
         'options_callback' => [get_class($this), 'getInterestOptions'],
       ] + $base_plugin_definition,
+      'role' => [
+        'label' => $this->t('Role'),
+        'type' => 'select',
+        'options_callback' => [get_class($this), 'getRoleOptions'],
+      ] + $base_plugin_definition,
     ];
     return $this->derivatives;
   }
 
   /**
-   * Returns list of 'Interest' for select element.
+   * Returns list of 'Interest' options for select element.
    *
    * @return array
    *   Array of Interest tids.
    */
   public static function getInterestOptions() {
-    // Machine name for taxonomy vocab.
-    $vocab_name = 'tags';
+    return SmartCDNDerivative::getTaxonomyOptions('tags');
+  }
 
+  /**
+   * Returns list of 'Role' options for select element.
+   *
+   * @return array
+   *   Array of Role options.
+   */
+  public static function getRoleOptions() {
+    // List of Role options.
+    return [
+      'none' => 'None',
+      'subscriber' => 'Subscriber',
+    ];
+  }
+
+  /**
+   * Returns list of taxonomy term options for select element.
+   *
+   * @param string $vocab_name
+   *   Machine name for vocab to get term options from.
+   *
+   * @return array
+   *   Array of term names keyed by tid.
+   */
+  public static function getTaxonomyOptions($vocab_name) {
     // Load all terms in taxonomy.
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocab_name);
 
