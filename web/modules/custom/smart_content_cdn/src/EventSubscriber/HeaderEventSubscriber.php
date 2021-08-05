@@ -39,9 +39,12 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
     if ($config->get('set_vary') ?? TRUE) {
       $response = $event->getResponse();
 
+      // Header keys to add to Vary header.
+      $vary_headers = ['Audience', 'Interest', 'Role'];
+
       // Retrieve and set vary header.
       $smart_content_cdn = new HeaderData();
-      $response_vary_header = $smart_content_cdn->returnVaryHeader('Audience');
+      $response_vary_header = $smart_content_cdn->returnVaryHeader($vary_headers);
       $response->headers->add($response_vary_header);
     }
   }
