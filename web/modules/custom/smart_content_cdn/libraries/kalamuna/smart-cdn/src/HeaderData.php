@@ -95,7 +95,11 @@ class HeaderData {
 
         // Parse Interest header.
         case 'Interest':
-          $parsed_header = explode(',', $header);
+          // Decode special characters.
+          $header_decoded = urldecode($header);
+
+          // Split header value into an array.
+          $parsed_header = explode('|', $header_decoded);
           break;
 
         // By default, just return header.
