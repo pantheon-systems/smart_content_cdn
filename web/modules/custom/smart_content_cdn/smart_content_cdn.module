@@ -107,7 +107,7 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
 
       if (!empty($interest_tids)) {
         // Implode interest tids into a single string.
-        $interest_cookie_value = implode(',', $interest_tids);
+        $interest_cookie_value = implode('|', $interest_tids);
 
         // Save interest tids in a cookie.
         $cookie_service = \Drupal::service('interest_cookie');

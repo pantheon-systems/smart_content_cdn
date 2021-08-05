@@ -53,15 +53,15 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
         $geo_default = $config->get('geo_default') ?? NULL;
 
         // Set value to Geo header if available, set to default config value otherwise.
-        $cdn_value = !empty($p_obj['geo']) ? $p_obj['geo'] : $geo_default;
+        $cdn_value = !empty($p_obj['Audience']['geo']) ? $p_obj['Audience']['geo'] : $geo_default;
         break;
 
       case 'interest':
-        $cdn_value = !empty($p_obj['interest']) ? $p_obj['interest'] : [];
+        $cdn_value = !empty($p_obj['Interest']) ? $p_obj['Interest'] : [];
         break;
 
       case 'role':
-        $cdn_value = !empty($p_obj['role']) ? $p_obj['role'] : 'none';
+        $cdn_value = !empty($p_obj['Role']) ? $p_obj['Role'] : 'none';
         break;
     }
 

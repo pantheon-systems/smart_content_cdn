@@ -60,10 +60,10 @@ class HeaderData {
    * @param string $key
    *   Key for the header.
    *
-   * @return array
+   * @return array|string
    *   Returns important parts of header string.
    */
-  public function parseHeader($key): array {
+  public function parseHeader($key) {
     // Get specified header.
     $header = $this->getHeader($key);
 
@@ -95,12 +95,16 @@ class HeaderData {
 
         // Parse Interest header.
         case 'Interest':
-          $parsed_header[$key] = explode(',', $header);
+          // Decode special characters.
+          $header_decoded = urldecode($header);
+
+          // Split header value into an array.
+          $parsed_header = explode('|', $header_decoded);
           break;
 
         // By default, just return header.
         default:
-          $parsed_header[$key] = $header;
+          $parsed_header = $header;
           break;
       }
 
@@ -119,20 +123,20 @@ class HeaderData {
   public function returnPersonalizationObject(): array {
     $p_obj = [];
 
-    // Get parsed Audience header.
-    $audience_header_parsed = $this->parseHeader('Audience');
+    $header_keys = [
+      'Audience',
+      'Interest',
+      'Role',
+    ];
 
-    // Add geo value to object.
-    if (!empty($audience_header_parsed['geo'])) {
-      $p_obj['geo'] = $audience_header_parsed['geo'];
-    }
+    foreach ($header_keys as $key) {
+      // Get parsed header value.
+      $header_parsed = $this->parseHeader($key);
 
-    // Get parsed Interest header.
-    $interest_header_parsed = $this->parseHeader('Interest');
-
-    // Add interest values to object.
-    if (!empty($interest_header_parsed['Interest'])) {
-      $p_obj['interest'] = $interest_header_parsed['Interest'];
+      // Add header value to personalization object.
+      if (!empty($header_parsed)) {
+        $p_obj[$key] = $header_parsed;
+      }
     }
 
     return $p_obj;
@@ -141,8 +145,8 @@ class HeaderData {
   /**
    * Returns vary header array.
    *
-   * @param string $key
-   *   Key for the header.
+   * @param string|array $key
+   *   Key for the header, or array of keys.
    *
    * @return array
    *   Vary header array, based on header data.
@@ -152,8 +156,14 @@ class HeaderData {
     $vary_header = $this->getHeader('Vary');
     $vary_header_array = !empty($vary_header) ? explode(', ', $vary_header) : [];
 
-    // Add header $key to Vary header.
-    $vary_header_array[] = $key;
+    // If array, merge the arrays.
+    if (is_array($key)) {
+      $vary_header_array += $key;
+    }
+    // Otherrwise, add header $key to Vary header.
+    else {
+      $vary_header_array[] = $key;
+    }
 
     // Return vary header array structure.
     return ['vary' => $vary_header_array];
