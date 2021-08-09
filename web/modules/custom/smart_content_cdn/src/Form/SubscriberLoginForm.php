@@ -37,12 +37,18 @@ class SubscriberLoginForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Renderer for adding cacheable dependencies.
+    $renderer = \Drupal::service('renderer');
+
     // Get header data.
     $smart_content_cdn = new HeaderData();
-    $role_header = $smart_content_cdn->getHeader('Role') ?? '';
+    $p_obj = $smart_content_cdn->returnPersonalizationObject();
+
+    // Add cacheable dependency using form and role header.
+    $renderer->addCacheableDependency($form, $p_obj['Role']);
 
     // If user is already logged in.
-    if (!empty($role_header)) {
+    if (!empty($p_obj['Role'])) {
       // Get user name.
       $username = array_key_first($this->loginInfo);
 
