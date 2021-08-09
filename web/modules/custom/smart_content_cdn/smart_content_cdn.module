@@ -5,7 +5,14 @@
  * Hook implementations for Smart CDN module.
  */
 
+ // @TODO Remove when working with vendor library.
+require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
+
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
+
+// @TODO Switch when working with vendor library.
+// use\Kalamuna\SmartCDN\HeaderData;
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
@@ -63,6 +70,13 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
     $session = \Drupal::request()->getSession();
     $session_tids = $session->get($session_name);
 
+    // Get header data.
+    $smart_content_cdn = new HeaderData();
+    $interest_header = $smart_content_cdn->getHeader('Interest') ?? '';
+
+    // Array to store current node's interest tids.
+    $interest_tids = [];
+
     // Get interest field.
     $interest_field = $entity->get($interest_field_name)->getValue();
     if (!empty($interest_field)) {
@@ -93,11 +107,13 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
         }
       }
 
+      // Sort counts in descending order.
+      arsort($session_tids, SORT_NUMERIC);
+
       // Save interest tids.
       $session->set($session_name, $session_tids);
 
       // Gather popular interest tids.
-      $interest_tids = [];
       foreach ($session_tids as $tid => $count) {
         // If tid has been visited a specified number of times, add it to interest array.
         if ($count >= $popularity_count) {
@@ -106,12 +122,15 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
       }
 
       if (!empty($interest_tids)) {
-        // Implode interest tids into a single string.
-        $interest_cookie_value = implode('|', $interest_tids);
+        // Since tids are sorted by count, first will be highest count tag.
+        $interest_cookie_value = $interest_tids[0];
 
-        // Save interest tids in a cookie.
-        $cookie_service = \Drupal::service('interest_cookie');
-        $cookie_service->setCookieValue($interest_cookie_value);
+        // If interest value has changed, set cookie.
+        if ($interest_cookie_value != $interest_header) {
+          // Save interest tids in a cookie.
+          $cookie_service = \Drupal::service('interest_cookie');
+          $cookie_service->setCookieValue($interest_cookie_value);
+        }
       }
     }
   }
