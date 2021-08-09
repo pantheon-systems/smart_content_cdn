@@ -2,8 +2,15 @@
 
 namespace Drupal\smart_content_cdn\Form;
 
+// @TODO Remove when working with vendor library.
+require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
+
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
+
+// @TODO Switch when working with vendor library.
+// use\Kalamuna\SmartCDN\HeaderData;
 
 /**
  * Contains Subscriber Login form.
@@ -30,23 +37,39 @@ class SubscriberLoginForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['username'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Username'),
-      '#default_value' => 'TestUser',
-      '#required' => TRUE,
-    ];
+    // Get header data.
+    $smart_content_cdn = new HeaderData();
+    $role_header = $smart_content_cdn->getHeader('Role') ?? '';
 
-    $form['password'] = [
-      '#type' => 'password',
-      '#title' => $this->t('Password'),
-      '#required' => TRUE,
-    ];
+    // If user is already logged in.
+    if (!empty($role_header)) {
+      // Get user name.
+      $username = array_key_first($this->loginInfo);
 
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Submit'),
-    ];
+      // Output welcome message.
+      $form['output'] = [
+        '#markup' => 'Welcome, ' . $username . '!',
+      ];
+    }
+    else {
+      $form['username'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Username'),
+        '#default_value' => 'TestUser',
+        '#required' => TRUE,
+      ];
+
+      $form['password'] = [
+        '#type' => 'password',
+        '#title' => $this->t('Password'),
+        '#required' => TRUE,
+      ];
+
+      $form['submit'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Submit'),
+      ];
+    }
 
     return $form;
   }
