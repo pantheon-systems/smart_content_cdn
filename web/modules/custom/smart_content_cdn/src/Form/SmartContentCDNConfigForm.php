@@ -63,12 +63,14 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     $smart_content_cdn = new HeaderData();
     $audience_header = $smart_content_cdn->getHeader('Audience') ?? '';
     $interest_header = $smart_content_cdn->getHeader('Interest') ?? '';
+    $role_header = $smart_content_cdn->getHeader('Role') ?? '';
 
     // Output current header data.
     $form['header_output'] = [
       '#markup' => '<h2>Current Headers</h1>
                               <div>Audience: ' . $audience_header . '</div>
-                              <div>Interest: ' . $interest_header . '</div>',
+                              <div>Interest: ' . $interest_header . '</div>
+                              <div>Role: ' . $role_header . '</div>',
     ];
 
     return $form;
