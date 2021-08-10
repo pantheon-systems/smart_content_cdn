@@ -14,14 +14,3 @@ condition_type.cdn:
     js/condition_type.cdn.js:  { }
   dependencies:
     - core/drupal
-
-node_view_ajax:
-  version: 1.x
-  js:
-    js/node_view_ajax.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings

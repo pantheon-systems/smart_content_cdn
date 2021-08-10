@@ -12,14 +12,3 @@ smart_cdn.subscriber_login:
     _title: 'Subscriber Login'
   requirements:
     _permission: 'access content'
-smart_content_cdn.interest_count:
-  path: 'smart_content_cdn/interest_count/{node}'
-  options:
-    parameters:
-      node:
-        type: entity:node
-  defaults:
-    _controller: '\Drupal\smart_content_cdn\Controller\SmartCDNAjaxController::interestCount'
-    _title: 'Interest Count'
-  requirements:
-    _permission: 'access content'
