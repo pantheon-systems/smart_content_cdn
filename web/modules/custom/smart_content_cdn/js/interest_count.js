@@ -77,10 +77,10 @@
           // Filter most popular tags.
           let interestTagsCount = getInterestTags(tagsCount);
 
-          if (interestTagsCount.length > 0) {
-            // Get array of popular tag tids.
-            let interestTags = Object.keys(interestTagsCount);
+          // Get array of popular tag tids.
+          let interestTags = Object.keys(interestTagsCount);
 
+          if (interestTags.length > 0) {
             // Set interest cookie with popular tags, separated by |.
             cookies.set('interest', interestTags.join('|'));
           }
