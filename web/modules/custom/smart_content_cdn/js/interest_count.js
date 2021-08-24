@@ -87,9 +87,11 @@
         }
       });
       $('body', context).once('viewCount').each(function(){
+          // Create LocalStorage instance.
+          var storage = new LocalStorage();
           // Get viewCount from localStorage if it exists.
           let viewCount = storage.getStorage(true);
-          if (viewCount.length) {
+          if (viewCount > 0) {
             viewCount++;
           }
           else {
@@ -123,11 +125,12 @@
      * Get value in localStorage.
      */
     getStorage(view) {
+      let item;
       if (view) {
-        let item = localStorage.getItem(this.key);
+        item = localStorage.getItem(this.view_key);
       }
       else {
-        let item = localStorage.getItem(this.view_key);
+        item = localStorage.getItem(this.key);
       }
 
       return item ? JSON.parse(item) : {};
