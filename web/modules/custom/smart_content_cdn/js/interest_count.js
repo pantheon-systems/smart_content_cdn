@@ -8,7 +8,7 @@
     attach: function (context, settings){
       // How many times should a tag be visited before adding to interest header.
       const popularityCount = 3;
-
+      const freeArticles = 3;
       /**
        * Update tagsCount with current node tags.
        */
@@ -66,13 +66,13 @@
           var storage = new LocalStorage();
 
           // Get tagsCount from localStorage if it exists.
-          let tagsCount = storage.getStorage();
+          let tagsCount = storage.getStorage(false);
 
           // Update tagsCount with current node tags.
           tagsCount = updateTagsCount(nodeTags, tagsCount);
 
           // Save updated counts to localStorage.
-          storage.setStorage(tagsCount);
+          storage.setStorage(tagsCount, false);
 
           // Filter most popular tags.
           let interestTagsCount = getInterestTags(tagsCount);
@@ -86,6 +86,22 @@
           }
         }
       });
+      $('body', context).once('viewCount').each(function(){
+          // Get viewCount from localStorage if it exists.
+          let viewCount = storage.getStorage(true);
+          if (viewCount.length) {
+            viewCount++;
+          }
+          else {
+            viewCount = 1;
+          }
+          // Save updated counts to localStorage.
+          storage.setStorage(viewCount, true);
+          if (viewCount > freeArticles) {
+            // Set role cookie.
+            //cookies.set('role', 'anonymous');
+          }
+      })
     }
   }
 
@@ -100,21 +116,34 @@
     constructor() {
       // localStorage key.
       this.key = 'smart_content_cdn.interest';
+      this.view_key = 'smart_content_cdn.view';
     }
 
     /**
      * Get value in localStorage.
      */
-    getStorage() {
-      let item = localStorage.getItem(this.key);
+    getStorage(view) {
+      if (view) {
+        let item = localStorage.getItem(this.key);
+      }
+      else {
+        let item = localStorage.getItem(this.view_key);
+      }
+
       return item ? JSON.parse(item) : {};
     }
 
     /**
      * Set value in localStorage.
      */
-    setStorage(value) {
-      localStorage.setItem(this.key, JSON.stringify(value));
+    setStorage(value, view) {
+      if (view) {
+        localStorage.setItem(this.view_key, JSON.stringify(value));
+      }
+      else {
+        localStorage.setItem(this.key, JSON.stringify(value));
+      }
+
     }
   }
 
