@@ -5,7 +5,12 @@
  * Hook implementations for Smart CDN module.
  */
 
+// @TODO Remove when working with vendor library.
+require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
+
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
+
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
@@ -75,5 +80,27 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
       $build['#attached']['library'][] = 'smart_content_cdn/interest_count';
       $build['#attached']['drupalSettings']['interest_count'] = $js_settings;
     }
+  }
+}
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entity\EntityInterface $entity, $context) {
+  // Get header data.
+  $smart_content_cdn = new HeaderData();
+  $p_obj = $smart_content_cdn->returnPersonalizationObject();
+
+  // Add cacheable dependency using form and role header.
+  if (isset($p_obj['Role'])) {
+    $entity->addCacheableDependency($p_obj['Role']);
+  }
+  else {
+    $entity->addCacheableDependency('none');
+  }
+
+  // If user is already logged in.
+  if ((!empty($p_obj['Role']) && $p_obj['Role'] == 'anonymous' || empty($p_obj['Role'])) && $entity->getEntityTypeId() == 'node' && $view_mode == 'full') {
+    $view_mode = 'teaser';
   }
 }
