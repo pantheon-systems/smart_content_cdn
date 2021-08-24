@@ -59,6 +59,7 @@ class SmartCDNDerivative extends DeriverBase {
     return [
       'none' => 'None',
       'subscriber' => 'Subscriber',
+      'anonymous' => 'Anonymous',
     ];
   }
 

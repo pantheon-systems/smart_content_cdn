@@ -45,7 +45,9 @@ class SubscriberLoginForm extends FormBase {
     $p_obj = $smart_content_cdn->returnPersonalizationObject();
 
     // Add cacheable dependency using form and role header.
-    $renderer->addCacheableDependency($form, $p_obj['Role']);
+    if (isset($p_obj['Role'])) {
+      $renderer->addCacheableDependency($form, $p_obj['Role']);
+    }
 
     // If user is already logged in.
     if (!empty($p_obj['Role'])) {

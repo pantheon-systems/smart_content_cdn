@@ -53,7 +53,6 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
  */
 function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $display, $view_mode) {
   $interest_field_name = 'field_tags';
-
   // Check if entity is a recipe node and has interest field.
   if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'recipe' && $entity->hasField($interest_field_name) && $view_mode == 'full') {
     // Get interest field.
