@@ -100,7 +100,7 @@ function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entit
   }
 
   // If user is already logged in.
-  if ((!empty($p_obj['Role']) && $p_obj['Role'] == 'anonymous' || empty($p_obj['Role'])) && $entity->getEntityTypeId() == 'node' && $view_mode == 'full') {
+  if ((!empty($p_obj['Role']) && $p_obj['Role'] == 'anonymous' || empty($p_obj['Role'])) && $entity->getEntityTypeId() == 'node' && $view_mode == 'full' && $entity->type == 'recipe') {
     $view_mode = 'teaser';
   }
 }
