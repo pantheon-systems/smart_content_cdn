@@ -2,13 +2,12 @@
  * @file
  * Count interests and set cookie for interest header.
  */
-
  (function ($, Drupal, cookies) {
   Drupal.behaviors.interestCount = {
     attach: function (context, settings){
       // How many times should a tag be visited before adding to interest header.
-      const popularityCount = 3;
-      const freeArticles = 3;
+      const popularityCount = ('interest_count' in settings && 'interest_threshold' in settings.interest_count) ? settings.interest_count.interest_threshold : 3;
+      const freeArticles = ('interest_count' in settings && 'view_threshold' in settings.interest_count) ? settings.interest_count.view_threshold : 3;
       /**
        * Update tagsCount with current node tags.
        */

@@ -59,6 +59,36 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#maxlength' => 10,
     ];
 
+    $default = $config->get('interest_threshold');
+    $form['interest_threshold'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Interest Treshold'),
+      '#description' => $this->t('How many times user needs to visit a category to be placed in the personalized segment?'),
+      '#default_value' => isset($default) ? $default : '',
+      '#size' => 10,
+      '#maxlength' => 10,
+    ];
+
+    $default = $config->get('subsciber_threshold');
+    $form['subsciber_threshold'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Subscirber Treshold'),
+      '#description' => $this->t('How many subscription protected nodes can anonymous users read?'),
+      '#default_value' => isset($default) ? $default : '',
+      '#size' => 10,
+      '#maxlength' => 10,
+    ];
+
+    $default = $config->get('subscription_content_types');
+    $cts = $this->getFormOptions('node_type');
+    $form['subscription_content_types'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Content types restricted by subscription'),
+      '#description' => $this->t('Content types restricted by subscription that will be displayed in Teaser view mode when user is anonymous and in full when user is a subscriber'),
+      '#default_value' => isset($default) ? $default : [],
+      '#options' => $cts,
+    ];
+
     // Get header data.
     $smart_content_cdn = new HeaderData();
     $audience_header = $smart_content_cdn->getHeader('Audience') ?? '';
@@ -72,6 +102,24 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     ];
 
     return $form;
+  }
+
+   /**
+   * Helper function to get options for the form based on the type of the entity type.
+   *
+   * @param string $storage_type
+   *    Type of the entity to load.
+   *
+   * @return array $options
+   *    Array of options keyed by id and showing entity label.
+   */
+  protected function getFormOptions(string $storage_type) {
+    $entities = \Drupal::entityManager()->getStorage($storage_type)->loadMultiple();
+    $options = [];
+    foreach ($entities as $key => $entity) {
+      $options[$entity->id()] = $entity->label();
+    }
+    return $options;
   }
 
   /**

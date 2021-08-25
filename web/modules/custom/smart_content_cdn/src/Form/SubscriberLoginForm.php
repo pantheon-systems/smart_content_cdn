@@ -37,6 +37,19 @@ class SubscriberLoginForm extends FormBase {
    * {@inheritdoc}.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $cookie_service = \Drupal::service('subscriber_cookie');
+    $cookie = $cookie_service->getCookieValue('subscriber_cookie');
+    if (!empty($cookie)) {
+      // Get user name.
+      $username = array_key_first($this->loginInfo);
+
+      // Output welcome message.
+     $form['output'] = [
+        '#markup' => '<div class="welcome-message">'. $this->t('Welcome') . ', ' . $username . '!</div>',
+      ];
+      return $form;
+    }
+
     // Renderer for adding cacheable dependencies.
     $renderer = \Drupal::service('renderer');
 
@@ -56,7 +69,7 @@ class SubscriberLoginForm extends FormBase {
 
       // Output welcome message.
       $form['output'] = [
-        '#markup' => 'Welcome, ' . $username . '!',
+        '#markup' => '<div class="welcome-message">'. $this->t('Welcome') . ', ' . $username . '!</div>',
       ];
     }
     else {
@@ -85,9 +98,7 @@ class SubscriberLoginForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-  }
+  public function validateForm(array &$form, FormStateInterface $form_state) {}
 
   /**
    * {@inheritdoc}

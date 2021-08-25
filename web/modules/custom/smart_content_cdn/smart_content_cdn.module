@@ -59,27 +59,41 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
 function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $display, $view_mode) {
   $interest_field_name = 'field_tags';
   // Check if entity is a recipe node and has interest field.
-  if ($entity->getEntityTypeId() == 'node' && $entity->bundle() == 'recipe' && $entity->hasField($interest_field_name) && $view_mode == 'full') {
-    // Get interest field.
-    $interest_field = $entity->get($interest_field_name)->getValue();
-    if (!empty($interest_field)) {
-      // Get array of interest tids.
-      $entity_tids = array_map(function($interest_field) {
-        return $interest_field['target_id'] ?? NULL;
-      }, $interest_field);
+  $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
+  $content_types = $config->get('subscription_content_types');
+  $content_types = array_values($content_types);
 
-      // Filter out any empty elements.
-      $entity_tids = array_filter($entity_tids);
+  $interest_threshold = $config->get('interest_threshold');
+  $view_threshold = $config->get('subsciber_threshold');
+  $view_modes = ['full', 'teaser'];
+  if ($entity->getEntityTypeId() == 'node' && in_array($entity->bundle(), $content_types) && in_array($view_mode, $view_modes)) {
+    $js_settings = [];
+    if ($entity->hasField($interest_field_name)) {
+      // Get interest field.
+      $interest_field = $entity->get($interest_field_name)->getValue();
+      if (!empty($interest_field)) {
+        // Get array of interest tids.
+        $entity_tids = array_map(function($interest_field) {
+          return $interest_field['target_id'] ?? NULL;
+        }, $interest_field);
 
-      // Settings to be passed to JS.
-      $js_settings = [
-        'tags' => $entity_tids,
-      ];
+        // Filter out any empty elements.
+        $entity_tids = array_filter($entity_tids);
 
-      // Attach libraries.
-      $build['#attached']['library'][] = 'smart_content_cdn/interest_count';
-      $build['#attached']['drupalSettings']['interest_count'] = $js_settings;
+        // Settings to be passed to JS.
+        $js_settings = [
+          'tags' => $entity_tids,
+        ];
+
+      }
     }
+
+    $js_settings['interest_threshold'] = $interest_threshold;
+    $js_settings['view_threshold'] = $view_threshold;
+    // Attach libraries.
+    $build['#attached']['library'][] = 'smart_content_cdn/interest_count';
+    $build['#attached']['drupalSettings']['interest_count'] = $js_settings;
+
   }
 }
 
@@ -87,7 +101,10 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
  * Implements hook_entity_view_mode_alter().
  */
 function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entity\EntityInterface $entity, $context) {
-  if ($entity->getEntityTypeId() == 'node' && $view_mode == 'full' && $entity->bundle() == 'recipe') {
+  // Check if entity is a recipe node and has interest field.
+  $content_types = \Drupal::configFactory()->getEditable('smart_content_cdn.config')->get('subscription_content_types');
+  $content_types = array_values($content_types);
+  if ($entity->getEntityTypeId() == 'node' && $view_mode == 'full' && in_array($entity->bundle(), $content_types)) {
     // Get header data.
     $smart_content_cdn = new HeaderData();
     $p_obj = $smart_content_cdn->returnPersonalizationObject();
