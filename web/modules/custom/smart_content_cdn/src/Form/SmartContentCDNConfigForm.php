@@ -48,6 +48,13 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#description' => $this->t('Should the Vary header be set with smart content cdn header data for smart caching?'),
       '#default_value' => isset($default) ? $default : TRUE,
     ];
+    $default = $config->get('set_preview');
+    $form['set_preview'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Enable preview mode for role?'),
+      '#description' => $this->t('If preview mode is enabled you will be viewing the site as a subscriber, if disabled - as anonymous'),
+      '#default_value' => isset($default) ? $default : FALSE,
+    ];
 
     $default = $config->get('geo_default');
     $form['geo_default'] = [
