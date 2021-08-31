@@ -101,11 +101,11 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
  * Implements hook_entity_view_mode_alter().
  */
 function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entity\EntityInterface $entity, $context) {
+  $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
   if (in_array('administrator', $roles) || in_array('editor', $roles)) {
     // Check if entity is a recipe node and has interest field.
-    $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
     $is_preview = $config->get('set_preview');
   }
   else {
