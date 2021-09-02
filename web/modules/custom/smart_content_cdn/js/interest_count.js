@@ -100,7 +100,7 @@
           storage.setStorage(viewCount, true);
           if (viewCount > freeArticles) {
             // Set role cookie.
-            //cookies.set('role', 'anonymous');
+            cookies.set('role', 'anonymous');
           }
       })
     }
