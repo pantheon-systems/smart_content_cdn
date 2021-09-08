@@ -10,7 +10,7 @@ require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
-
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
