@@ -143,8 +143,9 @@ function smart_content_cdn_link_alter(&$variables) {
     $smart_content_cdn = new HeaderData();
     $p_obj = $smart_content_cdn->returnPersonalizationObject();
     // Renderer for adding cacheable dependencies.
-      $renderer = \Drupal::service('renderer');
-    if (!empty($cookie) || (isset($p_obj['Role']) && $p_obj['Role'] !== 'anonymous')) {
+    $renderer = \Drupal::service('renderer');
+    \Drupal::logger('subs')->notice(var_dump($p_obj));
+    if (!empty($cookie) || (isset($p_obj['Role']) && $p_obj['Role'] != 'anonymous')) {
       $variables['text'] = new TranslatableMarkup('Welcome TestUser!');
       $role = 'logged_in';
     }
