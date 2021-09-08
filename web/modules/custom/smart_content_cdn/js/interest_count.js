@@ -98,7 +98,7 @@
           }
           // Save updated counts to localStorage.
           storage.setStorage(viewCount, true);
-          if (viewCount > freeArticles) {
+          if (viewCount >= freeArticles) {
             // Set role cookie.
             cookies.set('role', 'anonymous');
           }
