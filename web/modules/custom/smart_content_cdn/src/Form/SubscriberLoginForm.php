@@ -40,7 +40,6 @@ class SubscriberLoginForm extends FormBase {
     $cookie_service = \Drupal::service('subscriber_cookie');
     $cookie = $cookie_service->getCookieValue('subscriber_cookie');
     if (!empty($cookie)) {
-      \Drupal::logger('subs')->notice(var_dump($cookie));
       // Get user name.
       $username = array_key_first($this->loginInfo);
 
@@ -64,7 +63,7 @@ class SubscriberLoginForm extends FormBase {
     }
 
     // If user is already logged in.
-    if (!empty($p_obj['Role'])) {
+    if (!empty($p_obj['Role'] && $p_obj['Role'] !== 'anonymous')) {
       // Get user name.
       $username = array_key_first($this->loginInfo);
 
