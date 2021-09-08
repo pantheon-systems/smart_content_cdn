@@ -133,26 +133,4 @@ function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entit
   }
 }
 
-/**
- * Implements hook_menu_link_alter().
- */
-function smart_content_cdn_link_alter(&$variables) {
-  if ($variables['text'] == 'Subscriber Login') {
-    $cookie_service = \Drupal::service('subscriber_cookie');
-    $cookie = $cookie_service->getCookieValue('subscriber_cookie');
-    $smart_content_cdn = new HeaderData();
-    $p_obj = $smart_content_cdn->returnPersonalizationObject();
-    // Renderer for adding cacheable dependencies.
-    $renderer = \Drupal::service('renderer');
-    \Drupal::logger('subs')->notice(var_dump($p_obj) . ' ');
-    if (!empty($cookie) || (isset($p_obj['Role']) && $p_obj['Role'] != 'anonymous')) {
-      $variables['text'] = new TranslatableMarkup('Welcome TestUser!');
-      $role = 'logged_in';
-    }
-    else {
-      $role = 'logged_out';
-    }
-    $renderer->addCacheableDependency($variables, $role);
-  }
 
-}
