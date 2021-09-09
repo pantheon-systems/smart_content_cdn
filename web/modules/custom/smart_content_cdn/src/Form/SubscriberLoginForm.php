@@ -42,7 +42,6 @@ class SubscriberLoginForm extends FormBase {
     if (!empty($cookie)) {
       // Get user name.
       $username = array_key_first($this->loginInfo);
-
       // Output welcome message.
      $form['output'] = [
         '#markup' => '<div class="welcome-message">'. $this->t('Welcome') . ', ' . $username . '!</div>',
@@ -64,6 +63,7 @@ class SubscriberLoginForm extends FormBase {
 
     // If user is already logged in.
     if (!empty($p_obj['Role']) && $p_obj['Role'] !== 'anonymous') {
+      die();
       // Get user name.
       $username = array_key_first($this->loginInfo);
 
@@ -105,7 +105,6 @@ class SubscriberLoginForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
-    $form_state->setRebuild();
     if (!empty($values['username']) && !empty($values['password']) &&
     array_key_exists($values['username'], $this->loginInfo) &&
     $this->loginInfo[$values['username']] == $values['password']) {
@@ -114,6 +113,15 @@ class SubscriberLoginForm extends FormBase {
 
       $cookie_service = \Drupal::service('subscriber_cookie');
       $cookie_service->setCookieValue($token);
+      $destination = \Drupal::request()->query->get('destination');
+      if (isset($destination) && strpos($destination, 'node/') !== FALSE) {
+         $destination = str_replace('node/', '', $destination);
+        \Drupal::request()->query->remove('destination');
+        $form_state->setRedirect('entity.node.canonical', ['node' => $destination]);
+      }
+      else {
+        $form_state->setRebuild();
+      }
     }
     else {
       \Drupal::messenger()->addStatus('Invalid username or password.');
