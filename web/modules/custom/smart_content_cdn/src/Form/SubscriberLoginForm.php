@@ -125,6 +125,7 @@ class SubscriberLoginForm extends FormBase {
     }
     else {
       \Drupal::messenger()->addStatus('Invalid username or password.');
+      $form_state->setRebuild();
     }
   }
 
