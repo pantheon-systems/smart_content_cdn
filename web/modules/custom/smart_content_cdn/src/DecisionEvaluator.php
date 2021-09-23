@@ -128,7 +128,7 @@ class DecisionEvaluator {
           // Array from the headings.
           $header_array = $condition['settings']['smart_cdn']['value'] ?? NULL;
 
-          if (!empty($value) && !empty($header_value)) {
+          if (!empty($value) && !empty($header_array)) {
             // Check if settings value is in header array.
             $condition_evaluation = in_array($value, $header_array);
           }
