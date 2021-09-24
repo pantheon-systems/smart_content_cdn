@@ -63,7 +63,6 @@ class SubscriberLoginForm extends FormBase {
 
     // If user is already logged in.
     if (!empty($p_obj['Role']) && $p_obj['Role'] !== 'anonymous') {
-      die();
       // Get user name.
       $username = array_key_first($this->loginInfo);
 
