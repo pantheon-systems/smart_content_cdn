@@ -121,7 +121,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
    *    Array of options keyed by id and showing entity label.
    */
   protected function getFormOptions(string $storage_type) {
-    $entities = \Drupal::entityManager()->getStorage($storage_type)->loadMultiple();
+    $entities = \Drupal::entityTypeManager()->getStorage($storage_type)->loadMultiple();
     $options = [];
     foreach ($entities as $key => $entity) {
       $options[$entity->id()] = $entity->label();
