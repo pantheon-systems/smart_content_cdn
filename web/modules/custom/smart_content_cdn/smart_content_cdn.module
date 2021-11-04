@@ -76,7 +76,7 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
   $content_types = array_values($content_types);
 
   $interest_threshold = $config->get('interest_threshold');
-  $view_threshold = $config->get('subsciber_threshold');
+  $view_threshold = $config->get('subscriber_threshold');
   $view_modes = ['full', 'teaser'];
   if ($entity->getEntityTypeId() == 'node' && in_array($entity->bundle(), $content_types) && in_array($view_mode, $view_modes) && !empty($interest_fields)) {
     $js_settings = [
