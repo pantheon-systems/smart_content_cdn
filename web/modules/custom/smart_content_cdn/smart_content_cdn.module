@@ -57,34 +57,51 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
  * Implements hook_entity_view().
  */
 function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $display, $view_mode) {
-  $interest_field_name = 'field_tags';
+  $config = \Drupal::configFactory()->get('smart_content_cdn.config');
+
+  // Assemble interest fields config key.
+  $interest_fields_key_parts = [ 'interest_fields' ];
+  if (!empty($entity->getEntityTypeId())) {
+    $interest_fields_key_parts[] =$entity->getEntityTypeId();
+  }
+  if (!empty($entity->bundle())) {
+    $interest_fields_key_parts[] =$entity->bundle();
+  }
+  // Get interest fields for entity type and bundle from config.
+  $interest_fields_key = implode('_', $interest_fields_key_parts);
+  $interest_fields = $config->get($interest_fields_key);
+
   // Check if entity is a recipe node and has interest field.
-  $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
   $content_types = $config->get('subscription_content_types');
   $content_types = array_values($content_types);
 
   $interest_threshold = $config->get('interest_threshold');
   $view_threshold = $config->get('subsciber_threshold');
   $view_modes = ['full', 'teaser'];
-  if ($entity->getEntityTypeId() == 'node' && in_array($entity->bundle(), $content_types) && in_array($view_mode, $view_modes)) {
-    $js_settings = [];
-    if ($entity->hasField($interest_field_name)) {
-      // Get interest field.
-      $interest_field = $entity->get($interest_field_name)->getValue();
-      if (!empty($interest_field)) {
-        // Get array of interest tids.
-        $entity_tids = array_map(function($interest_field) {
-          return $interest_field['target_id'] ?? NULL;
-        }, $interest_field);
+  if ($entity->getEntityTypeId() == 'node' && in_array($entity->bundle(), $content_types) && in_array($view_mode, $view_modes) && !empty($interest_fields)) {
+    $js_settings = [
+      'tags' => [],
+    ];
+    foreach ($interest_fields as $interest_field_name) {
+      // Check that given interest field is checked.
+      if (empty($interest_field_name)) {
+        continue;
+      }
+      if ($entity->hasField($interest_field_name)) {
+        // Get interest field.
+        $interest_field = $entity->get($interest_field_name)->getValue();
+        if (!empty($interest_field)) {
+          // Get array of interest tids.
+          $entity_tids = array_map(function($interest_field) {
+            return $interest_field['target_id'] ?? NULL;
+          }, $interest_field);
 
-        // Filter out any empty elements.
-        $entity_tids = array_filter($entity_tids);
+          // Filter out any empty elements.
+          $entity_tids = array_filter($entity_tids);
 
-        // Settings to be passed to JS.
-        $js_settings = [
-          'tags' => $entity_tids,
-        ];
-
+          // Settings to be passed to JS.
+          $js_settings['tags'] = array_merge($js_settings['tags'], $entity_tids);
+        }
       }
     }
 
@@ -101,7 +118,7 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
  * Implements hook_entity_view_mode_alter().
  */
 function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entity\EntityInterface $entity, $context) {
-  $config = \Drupal::configFactory()->getEditable('smart_content_cdn.config');
+  $config = \Drupal::configFactory()->get('smart_content_cdn.config');
   $current_user = \Drupal::currentUser();
   $roles = $current_user->getRoles();
   if (in_array('administrator', $roles) || in_array('editor', $roles)) {
