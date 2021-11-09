@@ -150,4 +150,29 @@ function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entit
   }
 }
 
+/**
+ * Implements hook_user_login().
+ */
+function smart_content_cdn_user_login($account) {
+  $roles = $account->getRoles();
 
+  // Check for subscriber role.
+  if (in_array('administrator', $roles) || in_array('subscriber', $roles)) {
+    // Generate JWT token.
+    $auth = \Drupal::service('jwt.authentication.jwt');
+    $token = $auth->generateToken();
+
+    // Set cookie to JWT token.
+    $cookie_service = \Drupal::service('subscriber_cookie');
+    $cookie_service->setCookieValue($token);
+  }
+}
+
+/**
+ * Implements hook_user_logout().
+ */
+function smart_content_cdn_user_logout($account) {
+  // When user logs out, make sure subscriber cookie is unset.
+  $cookie_service = \Drupal::service('subscriber_cookie');
+  $cookie_service->setShouldDeleteCookie(TRUE);
+}
