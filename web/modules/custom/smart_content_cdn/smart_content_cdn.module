@@ -5,12 +5,9 @@
  * Hook implementations for Smart CDN module.
  */
 
-// @TODO Remove when working with vendor library.
-require_once DRUPAL_ROOT . "/modules/custom/smart_content_cdn/libraries/kalamuna/smart-cdn/src/HeaderData.php";
-
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\smart_content_cdn\Kalamuna\SmartCDN\HeaderData;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Kalamuna\SmartCDN\HeaderData;
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
