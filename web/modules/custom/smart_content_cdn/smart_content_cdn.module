@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Kalamuna\SmartCDN\HeaderData;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
@@ -154,7 +155,7 @@ function smart_content_cdn_user_login($account) {
   $roles = $account->getRoles();
 
   // Check for subscriber role.
-  if (in_array('administrator', $roles) || in_array('subscriber', $roles)) {
+  if (in_array('subscriber', $roles)) {
     // Generate JWT token.
     $auth = \Drupal::service('jwt.authentication.jwt');
     $token = $auth->generateToken();
@@ -172,4 +173,19 @@ function smart_content_cdn_user_logout($account) {
   // When user logs out, make sure subscriber cookie is unset.
   $cookie_service = \Drupal::service('subscriber_cookie');
   $cookie_service->setShouldDeleteCookie(TRUE);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function smart_content_cdn_preprocess_menu__account(&$variables) {
+  // Renderer for adding cacheable dependencies.
+  $renderer = \Drupal::service('renderer');
+
+  // Get role header.
+  $smart_content_cdn = new HeaderData();
+  $role = $smart_content_cdn->parseHeader('Role');
+
+  // Add cacheable dependency using menu and role.
+  $renderer->addCacheableDependency($variables, $role);
 }
