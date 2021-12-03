@@ -5,10 +5,9 @@ smart_content_cdn.config:
     _title: 'Smart Content CDN configuration'
   requirements:
     _permission: 'configure smart content cdn'
-smart_cdn.subscriber_login:
-  path: '/subscriber-login'
+smart_content_cdn.logout:
+  path: '/user/sublogout'
   defaults:
-    _form: '\Drupal\smart_content_cdn\Form\SubscriberLoginForm'
-    _title: 'Subscriber Login'
+    _controller: '\Drupal\smart_content_cdn\Controller\SubscriberUserController::logout'
   requirements:
-    _permission: 'access content'
+   _access: 'TRUE'
