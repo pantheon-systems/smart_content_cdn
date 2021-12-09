@@ -189,3 +189,16 @@ function smart_content_cdn_preprocess_menu__account(&$variables) {
   // Add cacheable dependency using menu and role.
   $renderer->addCacheableDependency($variables, $role);
 }
+
+/**
+ * Implements hook_page_attachments().
+ */
+function smart_content_cdn_page_attachments(array &$attachments) {
+  // Get header data.
+  $smart_content_cdn = new HeaderData();
+  $js_settings['pObj'] = $smart_content_cdn->returnPersonalizationObject();
+
+  // Attach libraries.
+  $attachments['#attached']['library'][] = 'smart_content_cdn/gtm_headers';
+  $attachments['#attached']['drupalSettings']['gtmHeaders'] = $js_settings;
+}
