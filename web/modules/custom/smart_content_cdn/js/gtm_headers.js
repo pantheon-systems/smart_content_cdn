@@ -15,7 +15,7 @@
         let interest = 'Interest' in settings.gtmHeaders.pObj ? settings.gtmHeaders.pObj.Interest : null;
 
         // Get role value.
-        let role = 'Role' in settings.gtmHeaders.pObj ? settings.gtmHeaders.pObj.Role : null;
+        let role = 'Role' in settings.gtmHeaders.pObj ? settings.gtmHeaders.pObj.Role : 'none';
 
         // Push header values in dataLayer object.
         window.dataLayer = window.dataLayer || [];
