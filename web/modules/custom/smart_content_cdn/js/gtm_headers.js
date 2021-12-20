@@ -11,8 +11,8 @@
         let geo = 'Audience' in settings.gtmHeaders.pObj && 'geo' in settings.gtmHeaders.pObj.Audience ?
           settings.gtmHeaders.pObj.Audience.geo : null;
 
-        // Get interest value.
-        let interest = 'Interest' in settings.gtmHeaders.pObj ? settings.gtmHeaders.pObj.Interest : null;
+        // Get interest value labels.
+        let interest = 'InterestLabels' in settings.gtmHeaders.pObj ? settings.gtmHeaders.pObj.InterestLabels : null;
 
         // Get role value.
         let role = 'Role' in settings.gtmHeaders.pObj ? settings.gtmHeaders.pObj.Role : 'none';
