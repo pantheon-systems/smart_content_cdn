@@ -194,9 +194,26 @@ function smart_content_cdn_preprocess_menu__account(&$variables) {
  * Implements hook_page_attachments().
  */
 function smart_content_cdn_page_attachments(array &$attachments) {
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+
   // Get header data.
   $smart_content_cdn = new HeaderData();
-  $js_settings['pObj'] = $smart_content_cdn->returnPersonalizationObject();
+  $p_obj = $smart_content_cdn->returnPersonalizationObject();
+
+  // Add labels for interest terms to $p_obj.
+  if (!empty($p_obj['Interest'])) {
+    foreach ($p_obj['Interest'] as $tid) {
+      // Load taxonomy term by tid.
+      $term = $term_storage->load($tid);
+      if (!empty($term)) {
+        // Add label for taxonomy term.
+        $p_obj['InterestLabels'][] = $term->label();
+      }
+    }
+  }
+
+  // Set pObj to pass into JavaScript.
+  $js_settings['pObj'] = $p_obj;
 
   // Attach libraries.
   $attachments['#attached']['library'][] = 'smart_content_cdn/gtm_headers';
