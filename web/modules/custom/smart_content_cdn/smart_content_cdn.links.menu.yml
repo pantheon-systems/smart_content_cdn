@@ -3,7 +3,3 @@ smart_content_cdn.config:
   parent: system.admin_config_system
   description: 'Configure Smart Content CDN settings'
   route_name: smart_content_cdn.config
-smart_content_cdn.logout:
-  weight: 10
-  menu_name: account
-  class: Drupal\smart_content_cdn\Plugin\Menu\SubscriberLoginLogoutMenuLink
