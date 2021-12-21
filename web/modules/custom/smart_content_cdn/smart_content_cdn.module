@@ -150,41 +150,6 @@ function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entit
 }
 
 /**
- * Implements hook_user_login().
- */
-function smart_content_cdn_user_login($account) {
-  $roles = $account->getRoles();
-
-  // Check for subscriber role.
-  if (in_array('subscriber', $roles)) {
-    // Generate JWT token.
-    $auth = \Drupal::service('jwt.authentication.jwt');
-    $token = $auth->generateToken();
-
-    // Set cookie to JWT token.
-    $cookie_service = \Drupal::service('subscriber_cookie');
-    $cookie_service->setCookieValue($token);
-  }
-}
-
-/**
- * Implements hook_user_logout().
- */
-function smart_content_cdn_user_logout($account) {
-  // When user logs out, make sure subscriber cookie is unset.
-  $cookie_service = \Drupal::service('subscriber_cookie');
-  $cookie_service->setShouldDeleteCookie(TRUE);
-}
-
-/**
- * Implements hook_form_FORM_ID_alter() with user_login_form.
- */
-function smart_content_cdn_form_user_login_form_alter(&$form, $form_state, $form_id) {
-  // Replace form object.
-  $form = \Drupal::formBuilder()->getForm('Drupal\smart_content_cdn\Form\SubscriberLoginForm');
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function smart_content_cdn_preprocess_menu__account(&$variables) {
