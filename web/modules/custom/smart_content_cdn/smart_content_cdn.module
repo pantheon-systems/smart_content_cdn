@@ -179,7 +179,7 @@ function smart_content_cdn_page_attachments(array &$attachments) {
       $term = $term_storage->load($tid);
       if (!empty($term)) {
         // Add label for taxonomy term.
-        $p_obj['InterestLabels'][] = $term->label();
+        $p_obj['InterestLabels'][] = strtolower($term->label());
       }
     }
   }
