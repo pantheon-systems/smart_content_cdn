@@ -11,13 +11,3 @@ smart_content_cdn.logout:
     _controller: '\Drupal\smart_content_cdn\Controller\SubscriberUserController::logout'
   requirements:
    _access: 'TRUE'
-
-smart_content_cdn.login:
-  path: '/user/login'
-  defaults:
-    _form: '\Drupal\smart_content_cdn\Form\SubscriberLoginForm'
-    _title: 'Log in'
-  requirements:
-    _user_is_logged_in: 'FALSE'
-  options:
-    _maintenance_access: TRUE

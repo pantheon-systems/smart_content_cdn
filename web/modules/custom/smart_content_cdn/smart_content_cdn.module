@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Kalamuna\SmartCDN\HeaderData;
+use Drupal\user\UserInterface;
 use Drupal\Core\Url;
 
 /**
@@ -173,6 +174,14 @@ function smart_content_cdn_user_logout($account) {
   // When user logs out, make sure subscriber cookie is unset.
   $cookie_service = \Drupal::service('subscriber_cookie');
   $cookie_service->setShouldDeleteCookie(TRUE);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() with user_login_form.
+ */
+function smart_content_cdn_form_user_login_form_alter(&$form, $form_state, $form_id) {
+  // Replace form object.
+  $form = \Drupal::formBuilder()->getForm('Drupal\smart_content_cdn\Form\SubscriberLoginForm');
 }
 
 /**
