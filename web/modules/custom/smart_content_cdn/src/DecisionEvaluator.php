@@ -10,9 +10,22 @@ use Drupal\smart_content\Decision\DecisionBase;
 class DecisionEvaluator {
 
   /**
-   * With given decision, return the segment that was satisfied.
+   * Array of conditions found after evalutation.
+   *
+   * @var array
    */
-  public function evaluate(DecisionBase $decision) {
+  protected $foundConditions = [];
+
+  /**
+   * With given decision, return the segment that was satisfied.
+   *
+   * @param \Drupal\smart_content\Decision\DecisionBase $decision
+   *   Decision object.
+   *
+   * @return string
+   *   Segment id for the decided segment.
+   */
+  public function evaluate(DecisionBase $decision) : string {
     if (empty($decision) || $decision->getSegmentSetStorage()->getPluginId() === 'broken') {
       return NULL;
     }
@@ -62,7 +75,7 @@ class DecisionEvaluator {
   /**
    * Recursive function to evaluate a given condition.
    */
-  private function evaluateConditions($conditions, $group_op = 'AND') {
+  private function evaluateConditions(array $conditions, $group_op = 'AND') {
     $condition_evaluations = [];
 
     // Loop through conditions.
@@ -76,6 +89,9 @@ class DecisionEvaluator {
 
       // Remove any numbers from condition key to get the condition id.
       $condition_id = preg_replace('/(.*?)(_\d*)?$/mi', '$1', $condition_key);
+
+      // Store conditions.
+      $this->foundConditions[] = $condition_id;
 
       switch ($condition_id) {
         // Group condition, recurse through sub conditions.
@@ -157,6 +173,9 @@ class DecisionEvaluator {
       $condition_evaluations[] = $condition_evaluation;
     }
 
+    // Make sure condition values are unique.
+    $this->foundConditions = array_unique($this->foundConditions);
+
     if (!empty($condition_evaluations)) {
       $group_eval = NULL;
       foreach ($condition_evaluations as $eval) {
@@ -185,6 +204,16 @@ class DecisionEvaluator {
     }
 
     return FALSE;
+  }
+
+  /**
+   * Get array of conditions found after evaluation.
+   *
+   * @return array
+   *   return foundConditions.
+   */
+  public function foundConditions() : array {
+    return $this->foundConditions;
   }
 
 }

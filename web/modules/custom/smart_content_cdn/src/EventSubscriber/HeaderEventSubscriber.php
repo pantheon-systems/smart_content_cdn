@@ -29,12 +29,24 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
   public function onRespond(ResponseEvent $event) {
     $config = \Drupal::configFactory()->get('smart_content_cdn.config');
 
+    $response = $event->getResponse();
+
     // Check if Vary Header should be set.
-    if ($config->get('set_vary') ?? TRUE) {
-      $response = $event->getResponse();
+    if (($config->get('set_vary') ?? TRUE) && method_exists($response, 'getCacheableMetadata')) {
+      // Get cache tags.
+      $tags = $response->getCacheableMetadata()->getCacheTags();
 
       // Header keys to add to Vary header.
-      $vary_headers = ['Audience', 'Interest', 'Role'];
+      $vary_headers = ['Role'];
+
+      // Add Geo to Vary header if there is a Geo decision on the page.
+      if (in_array('smart_content_cdn.geo', $tags)) {
+        $vary_headers[] = 'Audience';
+      }
+      // Add Interest to Vary header if there is a Interest decision on the page.
+      if (in_array('smart_content_cdn.interest', $tags)) {
+        $vary_headers[] = 'Interest';
+      }
 
       // Retrieve and set vary header.
       $smart_content_cdn = new HeaderData();

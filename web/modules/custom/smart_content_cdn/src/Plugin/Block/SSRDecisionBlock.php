@@ -32,6 +32,9 @@ class SSRDecisionBlock extends DecisionBlock {
       // Get DecisionEvaluator service.
       $evaluator = \Drupal::service('smart_content_cdn.decision_evaluator');
       if ($segment_id = $evaluator->evaluate($decision)) {
+        // Get list of conditions found in evaluation.
+        $conditions = $evaluator->foundConditions();
+
         // Get reaction config for block data.
         $reaction_config = $decision->getReactions()->getConfiguration();
 
@@ -69,6 +72,20 @@ class SSRDecisionBlock extends DecisionBlock {
                     '#id' => $this->getPluginId(),
                     'content' => $block_instance->build(),
                   ];
+
+                  // If role condition exists, add role cache tag.
+                  if (in_array('smart_cdn:role', $conditions)) {
+                    $block_build['#cache']['tags'][] = 'smart_content_cdn.role';
+                  }
+                  // If geo condition exists, add geo cache tag.
+                  if (in_array('smart_cdn:geo', $conditions)) {
+                    $block_build['#cache']['tags'][] = 'smart_content_cdn.geo';
+                  }
+                  // If interest condition exists, add interest cache tag.
+                  if (in_array('smart_cdn:interest', $conditions)) {
+                    $block_build['#cache']['tags'][] = 'smart_content_cdn.interest';
+                  }
+
                   // Set up cacheable dependency with decided segment id.
                   $renderer->addCacheableDependency($block_build, $segment_id);
 
