@@ -49,7 +49,7 @@ class SmartCDNCookie implements EventSubscriberInterface {
   protected $shouldDeleteCookie = FALSE;
 
   /**
-   * MySimpleCookie constructor.
+   * SmartCDNCookie constructor.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   Request stack service.
