@@ -29,11 +29,6 @@ class SmartCDNDerivative extends DeriverBase {
         'type' => 'array_select',
         'options_callback' => [get_class($this), 'getInterestOptions'],
       ] + $base_plugin_definition,
-      'role' => [
-        'label' => $this->t('Role'),
-        'type' => 'select',
-        'options_callback' => [get_class($this), 'getRoleOptions'],
-      ] + $base_plugin_definition,
     ];
     return $this->derivatives;
   }
@@ -46,21 +41,6 @@ class SmartCDNDerivative extends DeriverBase {
    */
   public static function getInterestOptions() {
     return SmartCDNDerivative::getTaxonomyOptions('tags');
-  }
-
-  /**
-   * Returns list of 'Role' options for select element.
-   *
-   * @return array
-   *   Array of Role options.
-   */
-  public static function getRoleOptions() {
-    // List of Role options.
-    return [
-      'none' => 'None',
-      'subscriber' => 'Subscriber',
-      'anonymous' => 'Anonymous',
-    ];
   }
 
   /**
