@@ -36,8 +36,9 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
       // Get cache tags.
       $tags = $response->getCacheableMetadata()->getCacheTags();
 
-      // Header keys to add to Vary header.
-      $vary_headers = [];
+      // Get existing vary headers if they've been set in other EventSubscribers.
+      $headers = $response->headers->all();
+      $vary_headers = array_key_exists('vary', $headers) ? $headers['vary'] : [];
 
       // Add Geo to Vary header if there is a Geo decision on the page.
       if (in_array('smart_content_cdn.geo', $tags)) {
