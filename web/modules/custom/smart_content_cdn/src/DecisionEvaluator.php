@@ -150,12 +150,13 @@ class DecisionEvaluator {
           }
           break;
 
+          default:
+             // Invoke hook to evaluate condition using smart_cdn values.
+            $hook_evaluations = \Drupal::moduleHandler()->invokeAll('ssr_evaluate_condition', [$condition_id, $condition['settings']]);
+            $hook_evaluations = array_filter($hook_evaluations);
+            $condition_evaluation = !empty($hook_evaluations);
+            break;
       }
-
-      // Invoke hook to evaluate condition using smart_cdn values.
-      $hook_evaluations = \Drupal::moduleHandler()->invokeAll('ssr_evaluate_condition', [$condition_id, $condition['settings']]);
-      $hook_evaluations = array_filter($hook_evaluations);
-      $condition_evaluation = !empty($hook_evaluations);
 
       // If evaluation should be negated.
       if ($negate) {
