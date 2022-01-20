@@ -73,10 +73,6 @@ class SSRDecisionBlock extends DecisionBlock {
                     'content' => $block_instance->build(),
                   ];
 
-                  // If role condition exists, add role cache tag.
-                  if (in_array('smart_cdn:role', $conditions)) {
-                    $block_build['#cache']['tags'][] = 'smart_content_cdn.role';
-                  }
                   // If geo condition exists, add geo cache tag.
                   if (in_array('smart_cdn:geo', $conditions)) {
                     $block_build['#cache']['tags'][] = 'smart_content_cdn.geo';
@@ -85,6 +81,8 @@ class SSRDecisionBlock extends DecisionBlock {
                   if (in_array('smart_cdn:interest', $conditions)) {
                     $block_build['#cache']['tags'][] = 'smart_content_cdn.interest';
                   }
+
+                  \Drupal::moduleHandler()->invokeAll('ssr_cache_tags', [&$block_build['#cache']['tags'], $conditions]);
 
                   // Set up cacheable dependency with decided segment id.
                   $renderer->addCacheableDependency($block_build, $segment_id);

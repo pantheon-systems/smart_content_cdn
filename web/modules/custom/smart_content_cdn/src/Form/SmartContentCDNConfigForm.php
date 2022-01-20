@@ -53,13 +53,6 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#description' => $this->t('Should the Vary header be set with smart content cdn header data for smart caching?'),
       '#default_value' => isset($default) ? $default : TRUE,
     ];
-    $default = $config->get('set_preview');
-    $form['set_preview'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable preview mode for role?'),
-      '#description' => $this->t('If preview mode is enabled you will be viewing the site as a subscriber, if disabled - as anonymous'),
-      '#default_value' => isset($default) ? $default : FALSE,
-    ];
 
     $default = $config->get('geo_default');
     $form['geo_default'] = [
@@ -104,26 +97,6 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
         }
       }
     }
-
-    $default = $config->get('subscriber_threshold');
-    $form['subscriber_threshold'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Subscriber Threshold'),
-      '#description' => $this->t('How many subscription protected nodes can anonymous users read?'),
-      '#default_value' => isset($default) ? $default : '',
-      '#size' => 10,
-      '#maxlength' => 10,
-    ];
-
-    $default = $config->get('subscription_content_types');
-    $cts = $this->getFormOptions('node_type');
-    $form['subscription_content_types'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Content types restricted by subscription'),
-      '#description' => $this->t('Content types restricted by subscription that will be displayed in Teaser view mode when user is anonymous and in full when user is a subscriber'),
-      '#default_value' => isset($default) ? $default : [],
-      '#options' => $cts,
-    ];
 
     // Get header data.
     $smart_content_cdn = new HeaderData();

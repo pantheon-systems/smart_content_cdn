@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Kalamuna\SmartCDN\HeaderData;
 
 /**
@@ -68,14 +67,10 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
   $interest_fields_key = implode('_', $interest_fields_key_parts);
   $interest_fields = $config->get($interest_fields_key);
 
-  // Check if entity is a recipe node and has interest field.
-  $content_types = $config->get('subscription_content_types');
-  $content_types = array_values($content_types);
-
   $interest_threshold = $config->get('interest_threshold');
-  $view_threshold = $config->get('subscriber_threshold');
+
   $view_modes = ['full', 'teaser'];
-  if ($entity->getEntityTypeId() == 'node' && in_array($entity->bundle(), $content_types) && in_array($view_mode, $view_modes) && !empty($interest_fields)) {
+  if ($entity->getEntityTypeId() == 'node' && in_array($view_mode, $view_modes) && !empty($interest_fields)) {
     $js_settings = [
       'tags' => [],
     ];
@@ -103,63 +98,12 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
     }
 
     $js_settings['interest_threshold'] = $interest_threshold;
-    $js_settings['view_threshold'] = $view_threshold;
+
     // Attach libraries.
     $build['#attached']['library'][] = 'smart_content_cdn/interest_count';
     $build['#attached']['drupalSettings']['interest_count'] = $js_settings;
 
   }
-}
-
-/**
- * Implements hook_entity_view_mode_alter().
- */
-function smart_content_cdn_entity_view_mode_alter(&$view_mode, Drupal\Core\Entity\EntityInterface $entity, $context) {
-  $config = \Drupal::configFactory()->get('smart_content_cdn.config');
-  $current_user = \Drupal::currentUser();
-  $roles = $current_user->getRoles();
-  if (in_array('administrator', $roles) || in_array('editor', $roles)) {
-    // Check if entity is a recipe node and has interest field.
-    $is_preview = $config->get('set_preview');
-  }
-  else {
-    $is_preview = FALSE;
-  }
-  $content_types = $config->get('subscription_content_types');
-  $content_types = array_values($content_types);
-  if ($entity->getEntityTypeId() == 'node' && $view_mode == 'full' && in_array($entity->bundle(), $content_types)) {
-    // Get header data.
-    $smart_content_cdn = new HeaderData();
-    $p_obj = $smart_content_cdn->returnPersonalizationObject();
-
-    // Add cacheable dependency using form and role header.
-    if (isset($p_obj['Role'])) {
-      $entity->addCacheableDependency($p_obj['Role']);
-    }
-    else {
-      $entity->addCacheableDependency('none');
-    }
-
-    // If user is already logged in or can see free content
-    if (!$is_preview && ((!empty($p_obj['Role']) && $p_obj['Role'] == 'anonymous'))) {
-      $view_mode = 'teaser';
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function smart_content_cdn_preprocess_menu__account(&$variables) {
-  // Renderer for adding cacheable dependencies.
-  $renderer = \Drupal::service('renderer');
-
-  // Get role header.
-  $smart_content_cdn = new HeaderData();
-  $role = $smart_content_cdn->parseHeader('Role');
-
-  // Add cacheable dependency using menu and role.
-  $renderer->addCacheableDependency($variables, $role);
 }
 
 /**

@@ -7,7 +7,7 @@
     attach: function (context, settings){
       // How many times should a tag be visited before adding to interest header.
       const popularityCount = ('interest_count' in settings && 'interest_threshold' in settings.interest_count) ? settings.interest_count.interest_threshold : 3;
-      const freeArticles = ('interest_count' in settings && 'view_threshold' in settings.interest_count) ? settings.interest_count.view_threshold : 3;
+
       /**
        * Update tagsCount with current node tags.
        */
@@ -65,13 +65,13 @@
           var storage = new LocalStorage();
 
           // Get tagsCount from localStorage if it exists.
-          let tagsCount = storage.getStorage(false);
+          let tagsCount = storage.getStorage();
 
           // Update tagsCount with current node tags.
           tagsCount = updateTagsCount(nodeTags, tagsCount);
 
           // Save updated counts to localStorage.
-          storage.setStorage(tagsCount, false);
+          storage.setStorage(tagsCount);
 
           // Filter most popular tags.
           let interestTagsCount = getInterestTags(tagsCount);
@@ -85,24 +85,6 @@
           }
         }
       });
-      $('body', context).once('viewCount').each(function(){
-          // Create LocalStorage instance.
-          var storage = new LocalStorage();
-          // Get viewCount from localStorage if it exists.
-          let viewCount = storage.getStorage(true);
-          if (viewCount > 0) {
-            viewCount++;
-          }
-          else {
-            viewCount = 1;
-          }
-          // Save updated counts to localStorage.
-          storage.setStorage(viewCount, true);
-          if (viewCount >= freeArticles) {
-            // Set role cookie.
-            cookies.set('role', 'anonymous');
-          }
-      })
     }
   }
 
@@ -117,20 +99,13 @@
     constructor() {
       // localStorage key.
       this.key = 'smart_content_cdn.interest';
-      this.view_key = 'smart_content_cdn.view';
     }
 
     /**
      * Get value in localStorage.
      */
-    getStorage(view) {
-      let item;
-      if (view) {
-        item = localStorage.getItem(this.view_key);
-      }
-      else {
-        item = localStorage.getItem(this.key);
-      }
+    getStorage() {
+      let item = localStorage.getItem(this.key);
 
       return item ? JSON.parse(item) : {};
     }
@@ -138,14 +113,8 @@
     /**
      * Set value in localStorage.
      */
-    setStorage(value, view) {
-      if (view) {
-        localStorage.setItem(this.view_key, JSON.stringify(value));
-      }
-      else {
-        localStorage.setItem(this.key, JSON.stringify(value));
-      }
-
+    setStorage(value) {
+      localStorage.setItem(this.key, JSON.stringify(value));
     }
   }
 
