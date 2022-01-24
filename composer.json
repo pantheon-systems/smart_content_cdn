@@ -1,0 +1,15 @@
+{
+    "name": "pantheon-systems/smart_content_cdn",
+    "description": "Edge Integrations for Drupal on Pantheon's platform.",
+    "type": "drupal-module",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Pantheon\\SmartContentCdn\\": "src/"
+        }
+    },
+    "require": {
+        "drupal/smart_content": "^3.0",
+        "pantheon-systems/pantheon-edge-integrations": "dev-master"
+    }
+}
