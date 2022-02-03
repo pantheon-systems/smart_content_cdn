@@ -1,0 +1,22 @@
+name: smart_content_cdn
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  runs-on: ubuntu-latest
+  name: Lint & Test
+  steps:
+    - uses: actions/checkout@v2
+
+  - name: Install dependencies
+    run: composer install
+
+  - name: Run Lint
+    run: composer lint
+
+  - name: Run Tests
+    run: composer test
