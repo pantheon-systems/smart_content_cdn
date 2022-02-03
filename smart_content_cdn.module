@@ -56,12 +56,12 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
   $config = \Drupal::configFactory()->get('smart_content_cdn.config');
 
   // Assemble interest fields config key.
-  $interest_fields_key_parts = [ 'interest_fields' ];
+  $interest_fields_key_parts = ['interest_fields'];
   if (!empty($entity->getEntityTypeId())) {
-    $interest_fields_key_parts[] =$entity->getEntityTypeId();
+    $interest_fields_key_parts[] = $entity->getEntityTypeId();
   }
   if (!empty($entity->bundle())) {
-    $interest_fields_key_parts[] =$entity->bundle();
+    $interest_fields_key_parts[] = $entity->bundle();
   }
   // Get interest fields for entity type and bundle from config.
   $interest_fields_key = implode('_', $interest_fields_key_parts);
@@ -84,7 +84,7 @@ function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $displa
         $interest_field = $entity->get($interest_field_name)->getValue();
         if (!empty($interest_field)) {
           // Get array of interest tids.
-          $entity_tids = array_map(function($interest_field) {
+          $entity_tids = array_map(function ($interest_field) {
             return $interest_field['target_id'] ?? NULL;
           }, $interest_field);
 
