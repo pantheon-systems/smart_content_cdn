@@ -3,6 +3,12 @@
     "description": "Edge Integrations for Drupal on Pantheon's platform.",
     "type": "drupal-module",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Pantheon\\SmartContentCdn\\": "src/"
@@ -11,5 +17,8 @@
     "require": {
         "drupal/smart_content": "^3.0",
         "pantheon-systems/pantheon-edge-integrations": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
     }
 }
