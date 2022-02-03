@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Kalamuna\SmartCDN\HeaderData;
 
 /**
- * Class HeaderEventSubscriber.
+ * Main HeaderEventSubscriber class.
  */
 class HeaderEventSubscriber implements EventSubscriberInterface {
 
@@ -36,7 +36,8 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
       // Get cache tags.
       $tags = $response->getCacheableMetadata()->getCacheTags();
 
-      // Get existing vary headers if they've been set in other EventSubscribers.
+      // Get existing vary headers if they've been set in other
+      // EventSubscribers.
       $headers = $response->headers->all();
       $vary_headers = array_key_exists('vary', $headers) ? $headers['vary'] : [];
 
@@ -44,7 +45,8 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
       if (in_array('smart_content_cdn.geo', $tags)) {
         $vary_headers[] = 'Audience';
       }
-      // Add Interest to Vary header if there is a Interest decision on the page.
+      // Add Interest to Vary header if there is a Interest decision on the
+      // page.
       if (in_array('smart_content_cdn.interest', $tags)) {
         $vary_headers[] = 'Interest';
       }

@@ -19,14 +19,14 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function getFormId() {
     return 'smart_content_cdn.config';
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Form constructor.
@@ -114,7 +114,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
   }
 
   /**
-   * Helper function to get options for the form based on the type of the entity type.
+   * Get options for the form based on the type of the entity type.
    *
    * @param string $storage_type
    *   Type of the entity to load.
