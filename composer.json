@@ -19,6 +19,12 @@
         "pantheon-systems/pantheon-edge-integrations": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "drupal/coder": "^8.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
