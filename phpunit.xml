@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="tests/config/bootstrap.php" colors="true" cacheResult="false">
+<phpunit bootstrap="vendor/autoload.php" colors="true" cacheResult="false">
 	<testsuites>
 		<testsuite name="Smart Content CDN Tests">
 			<directory>./tests/</directory>
