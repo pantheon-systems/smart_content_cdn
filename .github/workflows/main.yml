@@ -6,7 +6,8 @@ jobs:
     name: Lint & Test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Install dependencies
       run: composer install
