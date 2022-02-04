@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset>
+	<!-- Path to strip from the front of file paths inside reports (displays shorter paths) -->
+	<arg name="basepath" value="."/>
+
+	<!-- Exclude paths. -->
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/.git/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+
+	<!-- Set standard to PSR2. -->
+	<rule ref="Drupal">
+		<!-- Exclude rules using the following syntax. -->
+		<!-- <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/> -->
+	</rule>
+</ruleset>

@@ -24,7 +24,7 @@ class ArraySelect extends ConditionTypeBase {
       '#type' => 'select',
       '#required' => TRUE,
       '#options' => $options,
-      '#default_value' => isset($this->configuration['value']) ? $this->configuration['value'] : $this->defaultFieldConfiguration()['value'],
+      '#default_value' => $this->configuration['value'] ?? $this->defaultFieldConfiguration()['value'],
     ];
     return $form;
   }

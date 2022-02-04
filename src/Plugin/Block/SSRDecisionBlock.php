@@ -82,7 +82,10 @@ class SSRDecisionBlock extends DecisionBlock {
                     $block_build['#cache']['tags'][] = 'smart_content_cdn.interest';
                   }
 
-                  \Drupal::moduleHandler()->invokeAll('ssr_cache_tags', [&$block_build['#cache']['tags'], $conditions]);
+                  \Drupal::moduleHandler()->invokeAll('ssr_cache_tags', [
+                    &$block_build['#cache']['tags'],
+                    $conditions,
+                  ]);
 
                   // Set up cacheable dependency with decided segment id.
                   $renderer->addCacheableDependency($block_build, $segment_id);

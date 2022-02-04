@@ -1,0 +1,19 @@
+name: smart_content_cdn
+on: [push]
+
+jobs:
+  build:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: composer install
+
+    - name: Run Lint
+      run: composer lint
+
+    - name: Run Tests
+      run: composer test

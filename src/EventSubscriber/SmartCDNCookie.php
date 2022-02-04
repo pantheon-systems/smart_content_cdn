@@ -53,6 +53,8 @@ class SmartCDNCookie implements EventSubscriberInterface {
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   Request stack service.
+   * @param string $cookie_name
+   *   The name of the cookie.
    */
   public function __construct(RequestStack $request_stack, $cookie_name) {
     $this->request = $request_stack->getCurrentRequest();
@@ -63,6 +65,7 @@ class SmartCDNCookie implements EventSubscriberInterface {
    * Get this cookie's name.
    *
    * @return string
+   *   Returns the cookie name.
    */
   public function getCookieName() {
     return $this->cookieName;
@@ -89,6 +92,7 @@ class SmartCDNCookie implements EventSubscriberInterface {
    * Set the cookie's new value.
    *
    * @param mixed $value
+   *   The new cookie value.
    */
   public function setCookieValue($value) {
     $this->shouldUpdateCookie = TRUE;
@@ -99,6 +103,7 @@ class SmartCDNCookie implements EventSubscriberInterface {
    * Whether or not the cookie should be updated during the response.
    *
    * @return bool
+   *   Returns TRUE if the cookie should be updated, FALSE otherwise.
    */
   public function getShouldUpdateCookie() {
     return $this->shouldUpdateCookie;
@@ -108,6 +113,7 @@ class SmartCDNCookie implements EventSubscriberInterface {
    * Whether or not the cookie should be deleted during the response.
    *
    * @return bool
+   *   Returns TRUE if the cookie should be deleted, FALSE otherwise.
    */
   public function getShouldDeleteCookie() {
     return $this->shouldDeleteCookie;

@@ -19,14 +19,14 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function getFormId() {
     return 'smart_content_cdn.config';
   }
 
   /**
-   * {@inheritdoc}.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Form constructor.
@@ -51,7 +51,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Set Vary header'),
       '#description' => $this->t('Should the Vary header be set with smart content cdn header data for smart caching?'),
-      '#default_value' => isset($default) ? $default : TRUE,
+      '#default_value' => $default ?? TRUE,
     ];
 
     $default = $config->get('geo_default');
@@ -59,7 +59,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Default Geo value'),
       '#description' => $this->t('Default value for Geo location data'),
-      '#default_value' => isset($default) ? $default : '',
+      '#default_value' => $default ?? '',
       '#size' => 10,
       '#maxlength' => 10,
     ];
@@ -69,7 +69,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#type' => 'number',
       '#title' => $this->t('Interest Threshold'),
       '#description' => $this->t('How many times user needs to visit a category to be placed in the personalized segment?'),
-      '#default_value' => isset($default) ? $default : '',
+      '#default_value' => $default ?? '',
       '#size' => 10,
       '#maxlength' => 10,
     ];
@@ -91,7 +91,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
           $form['interest_fields'][$interest_fields_key] = [
             '#title' => $bundle_label,
             '#type' => 'checkboxes',
-            '#default_value' => isset($default) ? $default : [],
+            '#default_value' => $default ?? [],
             '#options' => $field_options[$bundle],
           ];
         }
@@ -113,14 +113,14 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     return $form;
   }
 
-   /**
-   * Helper function to get options for the form based on the type of the entity type.
+  /**
+   * Get options for the form based on the type of the entity type.
    *
    * @param string $storage_type
-   *    Type of the entity to load.
+   *   Type of the entity to load.
    *
-   * @return array $options
-   *    Array of options keyed by id and showing entity label.
+   * @return array
+   *   Array of options keyed by id and showing entity label.
    */
   protected function getFormOptions(string $storage_type) {
     $entities = \Drupal::entityTypeManager()->getStorage($storage_type)->loadMultiple();
