@@ -23,9 +23,10 @@
         "drupal/coder": "^8.3"
     },
     "scripts": {
-        "lint:php": "phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme --ignore=\"*/vendor/*,*/.git/*,*/tests/*\" .",
-        "lint:phpcbf": "phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme --ignore=\"*/vendor/*,*/.git/*,*/tests/*\" .",
-        "lint": "composer lint:php",
+        "lint:php": "find src/ -name '*.php' -exec php -l {} \\;",
+        "lint:phpcs": "phpcs -s --standard=phpcs.ruleset.xml --extensions=php,module,inc,install,test,profile,theme .",
+        "lint:phpcbf": "phpcbf -s --standard=phpcs.ruleset.xml --extensions=php,module,inc,install,test,profile,theme .",
+        "lint": "composer lint:php && composer lint:phpcs",
         "test:unit": "vendor/bin/phpunit -c ./phpunit.xml",
         "test": "composer test:unit"
     },
