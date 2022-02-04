@@ -1,11 +1,6 @@
 name: smart_content_cdn
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push]
+
 jobs:
   runs-on: ubuntu-latest
   name: Lint & Test
