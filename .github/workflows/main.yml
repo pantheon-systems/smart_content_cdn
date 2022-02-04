@@ -2,16 +2,17 @@ name: smart_content_cdn
 on: [push]
 
 jobs:
-  runs-on: ubuntu-latest
-  name: Lint & Test
-  steps:
+  build:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@v2
 
-  - name: Install dependencies
-    run: composer install
+    - name: Install dependencies
+      run: composer install
 
-  - name: Run Lint
-    run: composer lint
+    - name: Run Lint
+      run: composer lint
 
-  - name: Run Tests
-    run: composer test
+    - name: Run Tests
+      run: composer test
