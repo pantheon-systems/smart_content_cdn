@@ -15,5 +15,6 @@ jobs:
     - name: Run Lint
       run: composer lint
 
-    - name: Run Tests
-      run: composer test
+    # Running tests are disabled until we add the Drupal environment in the CI
+    #- name: Run Tests
+    #  run: composer test
