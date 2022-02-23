@@ -16,7 +16,7 @@
     },
     "require": {
         "drupal/smart_content": "^3.0",
-        "pantheon-systems/pantheon-edge-integrations": "dev-master"
+        "pantheon-systems/pantheon-edge-integrations": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
