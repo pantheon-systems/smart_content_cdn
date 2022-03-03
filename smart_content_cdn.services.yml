@@ -1,16 +1,3 @@
 services:
-  smart_content_cdn.header_subscriber:
-    class: '\Drupal\smart_content_cdn\EventSubscriber\HeaderEventSubscriber'
-    tags:
-      - { name: 'event_subscriber' }
-
-  subscriber_cookie:
-    class: '\Drupal\smart_content_cdn\EventSubscriber\SmartCDNCookie'
-    arguments:
-      - '@request_stack'
-      - 'subscriberToken'
-    tags:
-      - { name: 'event_subscriber' }
-
   smart_content_cdn.decision_evaluator:
     class: '\Drupal\smart_content_cdn\DecisionEvaluator'

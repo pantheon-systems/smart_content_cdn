@@ -3,7 +3,7 @@
 namespace Drupal\smart_content_cdn\Plugin\smart_content\Condition;
 
 use Drupal\smart_content\Condition\ConditionTypeConfigurableBase;
-use Kalamuna\SmartCDN\HeaderData;
+use Pantheon\EI\HeaderData;
 
 /**
  * Provides a default Smart Condition.
