@@ -4,6 +4,54 @@
 
 Drupal module that extends [`smart_content`](https://www.drupal.org/project/smart_content) to support Pantheon Edge Integrations and personalization features.
 
+## Usage
+
+For information on how to set this up, see the [Edge Integration Guide](https://pantheon.io/docs/guides/edge-integrations).
+
+## API
+
+It is possible to retrieve header information using Smart Content CDN within your own custom module. This can be used in any class context or procedural context in any hook.
+
+1. Include the library with the `use` statement.
+    ``` php
+    use Pantheon\EI\HeaderData;
+    ```
+1. Use the snippet below to obtain the header data object
+    ``` php
+    // Get header data.
+    $smart_content_cdn = new HeaderData();
+    $p_obj = $smart_content_cdn->returnPersonalizationObject();
+    ```
+
+### Drupal Event Subscriber Vary Header
+
+It is possible to set a Vary header within a Drupal Event Subscriber, giving the possibility of customizing content on a per-user basis.
+
+``` php
+/**
+ * This method is called when the kernel.response is dispatched.
+ *
+ * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+ *   The dispatched event.
+ */
+public function onRespond(FilterResponseEvent $event) {
+  $config = \Drupal::configFactory()->get('smart_content_cdn.config');
+  
+  // Check if Vary Header should be set.
+  if ($config->get('set_vary') ?? TRUE) {
+    $response = $event->getResponse();
+
+    // Header keys to add to Vary header.
+    $vary_headers = ['Audience', 'Interest', 'Role'];
+
+    // Retrieve and set vary header.
+    $smart_content_cdn = new HeaderData();
+    $response_vary_header = $smart_content_cdn->returnVaryHeader($vary_headers);
+    $response->headers->add($response_vary_header);
+  }
+}
+```
+
 ## Tests & Linting
 
 This module runs [PHPUnit](https://phpunit.de/) tests and [PHP_CodeSniffer](https://phpcs.de/) linting via the [Drupal Coder](https://www.drupal.org/project/coder) package.
