@@ -1,6 +1,6 @@
 # Smart Content CDN
 
-[![Unsupported](https://img.shields.io/badge/pantheon-unsupported-yellow?logo=pantheon&color=FFDC28)](https://github.com/topics/unsupported?q=org%3Apantheon-systems "Unsupported, e.g. a tool we are actively using internally and are making available, but do not promise to support") ![Build Status](https://github.com/pantheon-systems/smart_content_cdn/actions/workflows/main.yml/badge.svg) ![Package Version](https://img.shields.io/packagist/v/pantheon-systems/smart_content_cdn)
+[![Unsupported](https://img.shields.io/badge/pantheon-unsupported-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#unsupported) ![Build Status](https://github.com/pantheon-systems/smart_content_cdn/actions/workflows/main.yml/badge.svg) ![Package Version](https://img.shields.io/packagist/v/pantheon-systems/smart_content_cdn)
 
 Drupal module that extends [`smart_content`](https://www.drupal.org/project/smart_content) to support Pantheon Edge Integrations and personalization features.
 
@@ -36,7 +36,7 @@ It is possible to set a Vary header within a Drupal Event Subscriber, giving the
  */
 public function onRespond(FilterResponseEvent $event) {
   $config = \Drupal::configFactory()->get('smart_content_cdn.config');
-  
+
   // Check if Vary Header should be set.
   if ($config->get('set_vary') ?? TRUE) {
     $response = $event->getResponse();
