@@ -6,7 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
-use Kalamuna\SmartCDN\HeaderData;
+use Pantheon\EI\HeaderData;
 
 /**
  * Implements hook_block_view_BASE_BLOCK_ID_alter() for smart_content_decision_block().
@@ -49,89 +49,3 @@ function smart_content_cdn_block_build_smart_content_decision_block_alter(&$buil
   }
 }
 
-/**
- * Implements hook_entity_view().
- */
-function smart_content_cdn_entity_view(&$build, EntityInterface $entity, $display, $view_mode) {
-  $config = \Drupal::configFactory()->get('smart_content_cdn.config');
-
-  // Assemble interest fields config key.
-  $interest_fields_key_parts = ['interest_fields'];
-  if (!empty($entity->getEntityTypeId())) {
-    $interest_fields_key_parts[] = $entity->getEntityTypeId();
-  }
-  if (!empty($entity->bundle())) {
-    $interest_fields_key_parts[] = $entity->bundle();
-  }
-  // Get interest fields for entity type and bundle from config.
-  $interest_fields_key = implode('_', $interest_fields_key_parts);
-  $interest_fields = $config->get($interest_fields_key);
-
-  $interest_threshold = $config->get('interest_threshold');
-
-  $view_modes = ['full', 'teaser'];
-  if ($entity->getEntityTypeId() == 'node' && in_array($view_mode, $view_modes) && !empty($interest_fields)) {
-    $js_settings = [
-      'tags' => [],
-    ];
-    foreach ($interest_fields as $interest_field_name) {
-      // Check that given interest field is checked.
-      if (empty($interest_field_name)) {
-        continue;
-      }
-      if ($entity->hasField($interest_field_name)) {
-        // Get interest field.
-        $interest_field = $entity->get($interest_field_name)->getValue();
-        if (!empty($interest_field)) {
-          // Get array of interest tids.
-          $entity_tids = array_map(function ($interest_field) {
-            return $interest_field['target_id'] ?? NULL;
-          }, $interest_field);
-
-          // Filter out any empty elements.
-          $entity_tids = array_filter($entity_tids);
-
-          // Settings to be passed to JS.
-          $js_settings['tags'] = array_merge($js_settings['tags'], $entity_tids);
-        }
-      }
-    }
-
-    $js_settings['interest_threshold'] = $interest_threshold;
-
-    // Attach libraries.
-    $build['#attached']['library'][] = 'smart_content_cdn/interest_count';
-    $build['#attached']['drupalSettings']['interest_count'] = $js_settings;
-
-  }
-}
-
-/**
- * Implements hook_page_attachments().
- */
-function smart_content_cdn_page_attachments(array &$attachments) {
-  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-
-  // Get header data.
-  $smart_content_cdn = new HeaderData();
-  $p_obj = $smart_content_cdn->returnPersonalizationObject();
-
-  // Add labels for interest terms to $p_obj.
-  if (!empty($p_obj['Interest'])) {
-    foreach ($p_obj['Interest'] as $tid) {
-      // Load taxonomy term by tid.
-      $term = $term_storage->load($tid);
-      if (!empty($term)) {
-        // Add label for taxonomy term.
-        $p_obj['InterestLabels'][] = strtolower($term->label());
-      }
-    }
-  }
-
-  // Set pObj to pass into JavaScript.
-  $js_settings['pObj'] = $p_obj;
-
-  // Attach libraries.
-  $attachments['#attached']['library'][] = 'smart_content_cdn/gtm_headers';
-  $attachments['#attached']['drupalSettings']['gtmHeaders'] = $js_settings;
-}
