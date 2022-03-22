@@ -4,7 +4,7 @@ namespace Drupal\smart_content_cdn\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Kalamuna\SmartCDN\HeaderData;
+use Pantheon\EI\HeaderData;
 
 /**
  * Contains Smart Content CDN configuration form.

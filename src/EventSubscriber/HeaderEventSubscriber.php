@@ -5,7 +5,7 @@ namespace Drupal\smart_content_cdn\EventSubscriber;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Kalamuna\SmartCDN\HeaderData;
+use Pantheon\EI\HeaderData;
 
 /**
  * Main HeaderEventSubscriber class.
