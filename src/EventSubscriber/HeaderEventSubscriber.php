@@ -3,7 +3,7 @@
 namespace Drupal\smart_content_cdn\EventSubscriber;
 
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pantheon\EI\HeaderData;
 
@@ -23,10 +23,10 @@ class HeaderEventSubscriber implements EventSubscriberInterface {
   /**
    * This method is called when the kernel.response is dispatched.
    *
-   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
    *   The dispatched event.
    */
-  public function onRespond(ResponseEvent $event) {
+  public function onRespond(FilterResponseEvent $event) {
     $config = \Drupal::configFactory()->get('smart_content_cdn.config');
 
     $response = $event->getResponse();
