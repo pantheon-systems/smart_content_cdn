@@ -69,7 +69,7 @@ class DecisionEvaluator {
       $segment_id = $default_segment;
     }
 
-    return $segment_id;
+    return $segment_id ?? '';
   }
 
   /**
