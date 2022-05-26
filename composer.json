@@ -22,6 +22,9 @@
         "phpunit/phpunit": "^9.5",
         "drupal/coder": "^8.3"
     },
+    "suggest": {
+        "drupal/smart_content_preview": "Smart Content Preview is an optional package that allows you to preview your personalized content. It can be used with Smart Content CDN or with any Smart Content implementation."
+    },
     "scripts": {
         "lint:php": "find src/ -name '*.php' -exec php -l {} \\;",
         "lint:phpcs": "phpcs -s --standard=phpcs.ruleset.xml --extensions=php,module,inc,install,test,profile,theme .",
