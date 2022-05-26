@@ -4,9 +4,17 @@
 
 Drupal module that extends [`smart_content`](https://www.drupal.org/project/smart_content) to support Pantheon Edge Integrations and personalization features.
 
-## Usage
+## Installation
 
-For information on how to set this up, see the [Edge Integration Guide](https://pantheon.io/docs/guides/edge-integrations).
+We recommend using Composer to install this module. In your project root, run:
+
+```
+composer require pantheon-systems/smart_content_cdn
+```
+
+This will install the Smart Content module, Smart Content CDN and [`pantheon-systems/pantheon-edge-integrations`](https://github.com/pantheon-systems/pantheon-edge-integrations) -- a PHP library that is _required_ by Smart Content CDN. Smart Content CDN will not function properly without the `pantheon-edge-integrations` library.
+
+For detailed instructions on how to install and set up Smart Content CDN, see the [Edge Integration Guide](https://pantheon.io/docs/guides/edge-integrations).
 
 ## API
 
