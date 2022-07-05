@@ -85,7 +85,6 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#maxlength' => 10,
     ];
 
-
     $form['interest_vocab'] = [
       '#title' => $this->t('Interest Vocabulary'),
       '#type' => 'select',
