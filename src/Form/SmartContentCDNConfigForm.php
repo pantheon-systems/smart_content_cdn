@@ -4,6 +4,9 @@ namespace Drupal\smart_content_cdn\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\taxonomy\Entity\Vocabulary;
 use Pantheon\EI\HeaderData;
 
 /**
@@ -38,11 +41,19 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
     // Array of node bundle options.
     $cts = $this->getFormOptions('node_type');
 
+    // List of taxonomy vocabulary options.
+    $vocab_options = $this->getVocabularyOptions();
+
+    $interest_vocab_default = $config->get('interest_vocab') ?? NULL;
+
     // Get list of fields for each bundle type.
     $field_options = [];
     if (!empty($cts)) {
+      // Get interest vocab if set.
+      $interest_vocab_value = $form_state->getValue('interest_vocab') ?? $interest_vocab_default;
+
       foreach ($cts as $bundle => $label) {
-        $field_options[$bundle] = $this->getTaxonomyFieldOptions('node', $bundle);
+        $field_options[$bundle] = $this->getTaxonomyFieldOptions('node', $bundle, $interest_vocab_value);
       }
     }
 
@@ -74,12 +85,25 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
       '#maxlength' => 10,
     ];
 
+    $form['interest_vocab'] = [
+      '#title' => $this->t('Interest Vocabulary'),
+      '#type' => 'select',
+      '#default_value' => $interest_vocab_default ?? [],
+      '#options' => $vocab_options,
+      '#ajax' => [
+        'callback' => '::updateInterestFields',
+        'event' => 'change',
+      ],
+    ];
+
     if (!empty($cts) && !empty($field_options)) {
       // Fieldset for interest fields per content type.
       $form['interest_fields'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Interest Fields'),
         '#description' => $this->t("Selected taxonomy fields will be used to determine user's interests."),
+        '#prefix' => '<div id="interest-fields-wrapper">',
+        '#suffix' => '</div>',
       ];
 
       // For each bundle type.
@@ -87,6 +111,7 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
         // If the bundle has valid fields.
         if (!empty($field_options[$bundle])) {
           $interest_fields_key = 'interest_fields_node_' . $bundle;
+
           $default = $config->get($interest_fields_key);
           $form['interest_fields'][$interest_fields_key] = [
             '#title' => $bundle_label,
@@ -114,6 +139,41 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
   }
 
   /**
+   * Ajax callback to update interest fields with options based on vocabulary.
+   */
+  public function updateInterestFields(array &$form, FormStateInterface $form_state) {
+    $interest_vocab = $form_state->getValue('interest_vocab');
+
+    if (!empty($interest_vocab)) {
+      // Array of node bundle options.
+      $cts = $this->getFormOptions('node_type');
+
+      // Get list of fields for each bundle type.
+      if (!empty($cts)) {
+        foreach ($cts as $bundle => $bundle_label) {
+          $interest_fields_key = 'interest_fields_node_' . $bundle;
+
+          // Get taxonomy field options.
+          $bundle_field_options = $this->getTaxonomyFieldOptions('node', $bundle, $interest_vocab);
+          if (!empty($bundle_field_options)) {
+            // Reset available options.
+            $form['interest_fields'][$interest_fields_key]['#options'] = $bundle_field_options;
+          }
+          else {
+            // Unset missing bundles.
+            unset($form['interest_fields'][$interest_fields_key]);
+          }
+        }
+      }
+    }
+
+    $response = new AjaxResponse();
+    $response->addCommand(new ReplaceCommand('#interest-fields-wrapper', $form['interest_fields']));
+
+    return $response;
+  }
+
+  /**
    * Get options for the form based on the type of the entity type.
    *
    * @param string $storage_type
@@ -138,11 +198,13 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
    *   Type of the entity to load.
    * @param string $bundle
    *   Entity id to load.
+   * @param string $vocab
+   *   Limit fields to specified vocabulary machine name.
    *
    * @return array
    *   Array of options keyed by id and showing field label.
    */
-  protected function getTaxonomyFieldOptions(string $entity_type_id, string $bundle) {
+  protected function getTaxonomyFieldOptions(string $entity_type_id, string $bundle, string $vocab = NULL) {
     // Get list of field definitions for bundle.
     $entity_fields = \Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type_id, $bundle);
 
@@ -159,8 +221,31 @@ class SmartContentCDNConfigForm extends ConfigFormBase {
         continue;
       }
 
-      // If taxonomy term entity reference field, add to options.
-      $options[$field_id] = $field->getLabel() ?? $field_id;
+      $field_vocabs = $settings['handler_settings']['target_bundles'] ?? [];
+
+      if (empty($vocab) || array_key_exists($vocab, $field_vocabs)) {
+        // If taxonomy term entity reference field, add to options.
+        $options[$field_id] = $field->getLabel() ?? $field_id;
+      }
+    }
+
+    return $options;
+  }
+
+  /**
+   * Helper function to get vocabulary options.
+   *
+   * @return array
+   *   Array of options keyed by id and showing vocab label.
+   */
+  protected function getVocabularyOptions() {
+    // Get list of taxonomy vocabularies.
+    $vocabs = Vocabulary::loadMultiple();
+
+    $options = [];
+    foreach ($vocabs as $machine_name => $vocab) {
+      // Create select option.
+      $options[$machine_name] = $vocab->get('name') ?? $machine_name;
     }
 
     return $options;

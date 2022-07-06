@@ -40,7 +40,16 @@ class SmartCDNDerivative extends DeriverBase {
    *   Array of Interest tids.
    */
   public static function getInterestOptions() {
-    return SmartCDNDerivative::getTaxonomyOptions('tags');
+    // Get interest vocabulary.
+    $config = \Drupal::configFactory()->get('smart_content_cdn.config');
+    $interest_vocab = $config->get('interest_vocab');
+
+    if (!empty($interest_vocab)) {
+      // Return list of taxonomy term options.
+      return SmartCDNDerivative::getTaxonomyOptions($interest_vocab);
+    }
+
+    return [];
   }
 
   /**
