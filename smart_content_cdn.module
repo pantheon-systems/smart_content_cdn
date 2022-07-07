@@ -144,50 +144,50 @@ function smart_content_cdn_ssr_evaluate_condition($condition_id, array $attach_s
   $op = $attach_settings['op'] ?? 'AND';
 
   switch ($condition_id) {
-   // Geo condition.
-   case 'smart_cdn:geo':
-    // Value from segment settings.
-    $value = $attach_settings['value'] ?? NULL;
-    // Value from the headings.
-    $header_value = $attach_settings['smart_cdn']['value'] ?? NULL;
+    // Geo condition.
+    case 'smart_cdn:geo':
+      // Value from segment settings.
+      $value = $attach_settings['value'] ?? NULL;
+      // Value from the headings.
+      $header_value = $attach_settings['smart_cdn']['value'] ?? NULL;
 
-    if (!empty($value) && !empty($header_value) || $op === 'equal') {
-      switch ($op) {
-        // If the values equal each other.
-        case 'equals':
-          $condition_evaluation = $value === $header_value;
-          break;
+      if (!empty($value) && !empty($header_value) || $op === 'equal') {
+        switch ($op) {
+          // If the values equal each other.
+          case 'equals':
+            $condition_evaluation = $value === $header_value;
+            break;
 
-        // If the header value contains the value in settings.
-        case 'contains':
-          $condition_evaluation = strpos($header_value, $value) !== FALSE;
-          break;
+          // If the header value contains the value in settings.
+          case 'contains':
+            $condition_evaluation = strpos($header_value, $value) !== FALSE;
+            break;
 
-        // If the header value starts with the value in settings.
-        case 'starts_with':
-          $condition_evaluation = strpos($header_value, $value) === 0;
-          break;
+          // If the header value starts with the value in settings.
+          case 'starts_with':
+            $condition_evaluation = strpos($header_value, $value) === 0;
+            break;
 
-        // If the header value is empty.
-        case 'empty':
-          $condition_evaluation = empty($header_value);
-          break;
+          // If the header value is empty.
+          case 'empty':
+            $condition_evaluation = empty($header_value);
+            break;
+        }
       }
-    }
-    break;
+      break;
 
-  // Interest condition.
-  case 'smart_cdn:interest':
-    // Value from segment settings.
-    $value = $attach_settings['value'] ?? NULL;
-    // Array from the headings.
-    $header_array = $attach_settings['smart_cdn']['value'] ?? NULL;
+    // Interest condition.
+    case 'smart_cdn:interest':
+      // Value from segment settings.
+      $value = $attach_settings['value'] ?? NULL;
+      // Array from the headings.
+      $header_array = $attach_settings['smart_cdn']['value'] ?? NULL;
 
-    if (!empty($value) && !empty($header_array)) {
-      // Check if settings value is in header array.
-      $condition_evaluation = in_array($value, $header_array);
-    }
-    break;
+      if (!empty($value) && !empty($header_array)) {
+        // Check if settings value is in header array.
+        $condition_evaluation = in_array($value, $header_array);
+      }
+      break;
   }
 
   return $condition_evaluation;
