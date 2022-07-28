@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Install hook implementations for Smart Content CDN module.
+ */
+
+/**
+ * Implementation of hook_requirements().
+ *
+ * During install of the smart_content_cdn module, make sure the library is installed.
+ */
+function smart_content_cdn_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'install') {
+    // Make sure the HeaderData class is available.
+    if (!class_exists('Pantheon\EI\HeaderData')) {
+      $requirements['smart_content_cdn'] = [
+        'title' => t('Smart Content CDN'),
+        'description' => t('The HeaderData class was not found. Install the module with Composer with composer require pantheon-systems/smart_content_cdn .'),
+        'severity' => REQUIREMENT_ERROR,
+      ];
+    }
+  }
+
+  return $requirements;
+}
