@@ -42,13 +42,43 @@ class SmartCDNCondition extends ConditionTypeConfigurableBase {
     // Determine CDN value based on derivative id.
     $cdn_value = NULL;
     switch ($derivative_id) {
-      case 'geo':
+      case 'geo_continent_code':
+        // Set value to Geo header if available.
+        $cdn_value = !empty($p_obj['P13n-Geo-Continent-Code']) ? $p_obj['P13n-Geo-Continent-Code'] : NULL;
+        break;
+
+      case 'geo_country_code':
         // Get default Geo value from config.
         $geo_default = $config->get('geo_default') ?? NULL;
 
         // Set value to Geo header if available, set to default config value
         // otherwise.
-        $cdn_value = !empty($p_obj['Audience']['geo']) ? $p_obj['Audience']['geo'] : $geo_default;
+        $cdn_value = !empty($p_obj['P13n-Geo-Country-Code']) ? $p_obj['P13n-Geo-Country-Code'] : $geo_default;
+        break;
+
+      case 'geo_country_name':
+        // Set value to Geo header if available.
+        $cdn_value = !empty($p_obj['P13n-Geo-Country-Name']) ? $p_obj['P13n-Geo-Country-Name'] : NULL;
+        break;
+
+      case 'geo_region':
+        // Set value to Geo header if available.
+        $cdn_value = !empty($p_obj['P13n-Geo-Region']) ? $p_obj['P13n-Geo-Region'] : NULL;
+        break;
+
+      case 'geo_city':
+        // Set value to Geo header if available.
+        $cdn_value = !empty($p_obj['P13n-Geo-City']) ? $p_obj['P13n-Geo-City'] : NULL;
+        break;
+
+      case 'geo_connection_type':
+        // Set value to Geo header if available.
+        $cdn_value = !empty($p_obj['P13n-Geo-Conn-Type']) ? $p_obj['P13n-Geo-Conn-Type'] : NULL;
+        break;
+
+      case 'geo_conneciton_speed':
+        // Set value to Geo header if available.
+        $cdn_value = !empty($p_obj['P13n-Geo-Conn-Speed']) ? $p_obj['P13n-Geo-Conn-Speed'] : NULL;
         break;
 
       case 'interest':
