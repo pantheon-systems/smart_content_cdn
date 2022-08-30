@@ -60,6 +60,18 @@ public function onRespond(FilterResponseEvent $event) {
 }
 ```
 
+## Integrations
+
+There are a few different ways to extend the capabilities of the Smart Content CDN module.
+
+### Smart Content Preview
+
+Use the [Smart Content Preview](https://www.drupal.org/project/smart_content_preview) to allow previewing different segments that you have set up.
+
+### Smart Content SSR
+
+The [Smart Content SSR](https://www.drupal.org/project/smart_content_ssr) module adds a server-side rendering Decision block, based on the Decision block that the Smart Content module provides. Use this if you're looking to improve speed on the site, along with consistency.
+
 ## Tests & Linting
 
 This module runs [PHPUnit](https://phpunit.de/) tests and [PHP_CodeSniffer](https://phpcs.de/) linting via the [Drupal Coder](https://www.drupal.org/project/coder) package.
