@@ -204,6 +204,7 @@ function smart_content_cdn_ssr_evaluate_condition($condition_id, array $attach_s
  */
 function smart_content_cdn_ssr_cache_tags(&$tags, $conditions) {
   // If geo condition exists, add geo cache tag.
+  // TODO: Update the smart_cdn:geo condition tags to reflect the new Pantheon ones.
   if (in_array('smart_cdn:geo', $conditions)) {
     $tags[] = 'smart_content_cdn.geo';
   }
