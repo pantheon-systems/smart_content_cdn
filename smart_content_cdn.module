@@ -203,13 +203,13 @@ function smart_content_cdn_ssr_evaluate_condition($condition_id, array $attach_s
  * Implements hook_ssr_cache_tags().
  */
 function smart_content_cdn_ssr_cache_tags(&$tags, $conditions) {
-  // If geo condition exists, add geo cache tag.
-  // TODO: Update the smart_cdn:geo condition tags to reflect the new Pantheon ones.
-  if (in_array('smart_cdn:geo', $conditions)) {
-    $tags[] = 'smart_content_cdn.geo';
-  }
-  // If interest condition exists, add interest cache tag.
-  if (in_array('smart_cdn:interest', $conditions)) {
-    $tags[] = 'smart_content_cdn.interest';
+  // Loop through given conditions.
+  foreach ($conditions as $condition_key) {
+    $output_array = [];
+    // Check if smart_cdn condition and get condition key from string.
+    if (preg_match('/(smart_cdn:)(.*)/i', $condition_key, $output_array) && !empty($output_array) && count($output_array) >= 3) {
+      // Add smart_content_cdn cache tag.
+      $tags[] = 'smart_content_cdn.' . $output_array[2];
+    }
   }
 }
