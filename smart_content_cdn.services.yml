@@ -11,6 +11,3 @@ services:
       - 'subscriberToken'
     tags:
       - { name: 'event_subscriber' }
-
-  smart_content_cdn.decision_evaluator:
-    class: '\Drupal\smart_content_cdn\DecisionEvaluator'

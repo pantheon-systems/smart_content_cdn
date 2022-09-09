@@ -23,7 +23,8 @@
         "drupal/coder": "^8.3"
     },
     "suggest": {
-        "drupal/smart_content_preview": "Smart Content Preview is an optional package that allows you to preview your personalized content. It can be used with Smart Content CDN or with any Smart Content implementation."
+        "drupal/smart_content_preview": "Smart Content Preview is an optional package that allows you to preview your personalized content. It can be used with Smart Content CDN or with any Smart Content implementation.",
+        "drupal/smart_content_ssr": "Smart Content SSR is an optional package that adds a server-side rendered Decision Block. It can be used with Smart Content CDN or with any Smart Content implementation with adjustments."
     },
     "scripts": {
         "lint:php": "find src/ -name '*.php' -exec php -l {} \\;",

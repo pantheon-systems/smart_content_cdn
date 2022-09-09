@@ -20,8 +20,32 @@ class SmartCDNDerivative extends DeriverBase {
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     $this->derivatives = [
-      'geo' => [
-        'label' => $this->t('Geo'),
+      'geo_continent_code' => [
+        'label' => $this->t('Geo: Continent Code'),
+        'type' => 'textfield',
+      ] + $base_plugin_definition,
+      'geo_country_code' => [
+        'label' => $this->t('Geo: Country Code'),
+        'type' => 'textfield',
+      ] + $base_plugin_definition,
+      'geo_country_name' => [
+        'label' => $this->t('Geo: Country Name'),
+        'type' => 'textfield',
+      ] + $base_plugin_definition,
+      'geo_region' => [
+        'label' => $this->t('Geo: Region'),
+        'type' => 'textfield',
+      ] + $base_plugin_definition,
+      'geo_city' => [
+        'label' => $this->t('Geo: City'),
+        'type' => 'textfield',
+      ] + $base_plugin_definition,
+      'geo_connection_type' => [
+        'label' => $this->t('Geo: Connection Type'),
+        'type' => 'textfield',
+      ] + $base_plugin_definition,
+      'geo_connection_speed' => [
+        'label' => $this->t('Geo: Connection Speed'),
         'type' => 'textfield',
       ] + $base_plugin_definition,
       'interest' => [
