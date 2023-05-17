@@ -1,5 +1,7 @@
 # Smart Content CDN
 
+Moved to [Drupal.org Smart Content CDN](https://www.drupal.org/project/smart_content_cdn).
+
 [![Unsupported](https://img.shields.io/badge/pantheon-unsupported-yellow?logo=pantheon&color=FFDC28)](https://pantheon.io/docs/oss-support-levels#unsupported) ![Build Status](https://github.com/pantheon-systems/smart_content_cdn/actions/workflows/main.yml/badge.svg) ![Package Version](https://img.shields.io/packagist/v/pantheon-systems/smart_content_cdn)
 
 Drupal module that extends [`smart_content`](https://www.drupal.org/project/smart_content) to support Pantheon Edge Integrations and personalization features.
